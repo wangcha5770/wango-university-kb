@@ -1,0 +1,707 @@
+<title>UBC Engineering Review</title>
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --surface-2: #eef0f3;
+    --border: #d7dbe1;
+    --ink: #171b21;
+    --ink-2: #4b5563;
+    --ink-3: #6b7280;
+    --accent: #1f5fae;
+    --accent-ink: #ffffff;
+    --ok-bg: #e1f3e6; --ok-ink: #166534;
+    --warn-bg: #fdf1d8; --warn-ink: #8a5b00;
+    --neutral-bg: #eceef1; --neutral-ink: #52525b;
+    --bad-bg: #fbe1df; --bad-ink: #9f2b22;
+    --sim-bg: #ecebfb; --sim-ink: #4338ca; --sim-border: #c7c4f2;
+    --font-head: "Newsreader", Georgia, "Times New Roman", serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12161b; --surface: #191f26; --surface-2: #1f2730; --border: #303a45;
+      --ink: #e7eaee; --ink-2: #b7bfc9; --ink-3: #8b95a1;
+      --accent: #7aa8e6; --accent-ink: #0d1520;
+      --ok-bg: #143024; --ok-ink: #6fd99a;
+      --warn-bg: #362a10; --warn-ink: #e7b955;
+      --neutral-bg: #232b34; --neutral-ink: #a3acb7;
+      --bad-bg: #391c1c; --bad-ink: #f0968c;
+      --sim-bg: #211f38; --sim-ink: #b3aef2; --sim-border: #3a3568;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12161b; --surface: #191f26; --surface-2: #1f2730; --border: #303a45;
+    --ink: #e7eaee; --ink-2: #b7bfc9; --ink-3: #8b95a1;
+    --accent: #7aa8e6; --accent-ink: #0d1520;
+    --ok-bg: #143024; --ok-ink: #6fd99a;
+    --warn-bg: #362a10; --warn-ink: #e7b955;
+    --neutral-bg: #232b34; --neutral-ink: #a3acb7;
+    --bad-bg: #391c1c; --bad-ink: #f0968c;
+    --sim-bg: #211f38; --sim-ink: #b3aef2; --sim-border: #3a3568;
+  }
+
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-body); padding-inline: 16px; padding-block: 20px 60px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { font-family: var(--font-head); font-weight: 600; text-wrap: balance; margin: 0 0 10px; }
+  h1 { font-size: 1.6rem; }
+  h2 { font-size: 1.15rem; margin-top: 28px; color: var(--ink); }
+  h3 { font-size: 1rem; margin-top: 18px; }
+  .wrap { max-width: 760px; margin: 0 auto; }
+
+  .eyebrow { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 4px; }
+  .crumbs { font-size: 0.85rem; color: var(--ink-3); margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-2); }
+  .crumbs .sep { margin: 0 6px; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+  .list { display: flex; flex-direction: column; gap: 8px; }
+  .row-link { display: flex; justify-content: space-between; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; }
+  .row-link:hover { border-color: var(--accent); }
+  .row-title { font-weight: 600; }
+  .row-sub { color: var(--ink-3); font-size: 0.82rem; }
+
+  .badge { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 0.74rem; font-weight: 600; white-space: nowrap; }
+  .badge.VERIFIED { background: var(--ok-bg); color: var(--ok-ink); }
+  .badge.NEEDS_REVIEW { background: var(--warn-bg); color: var(--warn-ink); }
+  .badge.NOT_VERIFIED { background: var(--neutral-bg); color: var(--neutral-ink); }
+  .badge.CONFLICTING_SOURCES { background: var(--bad-bg); color: var(--bad-ink); }
+  .badge.CURRENT { background: var(--ok-bg); color: var(--ok-ink); }
+  .badge.POSSIBLY_OUTDATED { background: var(--warn-bg); color: var(--warn-ink); }
+  .badge.SUPERSEDED { background: var(--bad-bg); color: var(--bad-ink); }
+  .badge.UNKNOWN { background: var(--neutral-bg); color: var(--neutral-ink); }
+
+  dl.kv { display: grid; grid-template-columns: 160px 1fr; gap: 8px 14px; margin: 0; font-size: 0.92rem; }
+  dl.kv dt { color: var(--ink-3); }
+  dl.kv dd { margin: 0; }
+  @media (max-width: 480px) { dl.kv { grid-template-columns: 1fr; } dl.kv dt { margin-top: 8px; } }
+
+  .excerpt { font-style: italic; color: var(--ink-2); }
+  .locator { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-3); }
+  .reasoning { font-size: 0.88rem; color: var(--ink-2); background: var(--surface-2); border-radius: 8px; padding: 10px 12px; margin-top: 6px; }
+
+  .simulated-flag { background: var(--sim-bg); border: 1px solid var(--sim-border); color: var(--sim-ink); border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; margin-bottom: 14px; font-weight: 600; }
+  .gap-list { font-size: 0.88rem; color: var(--ink-2); padding-left: 20px; }
+  .gap-list li { margin-bottom: 6px; }
+
+  form.review { border: 1px solid var(--border); background: var(--surface); border-radius: 10px; padding: 14px 16px; margin-top: 16px; }
+  form.review h3 { margin-top: 0; }
+  .radio-row { display: flex; flex-wrap: wrap; gap: 14px; margin: 10px 0; font-size: 0.92rem; }
+  .radio-row label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  input[type="text"], textarea, select { font: inherit; font-size: 0.9rem; padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--ink); width: 100%; }
+  button { font: inherit; font-weight: 600; padding: 8px 16px; border-radius: 7px; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); cursor: pointer; }
+  button:hover { opacity: 0.9; }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .field { margin-bottom: 10px; }
+  .field label { display: block; font-size: 0.82rem; color: var(--ink-3); margin-bottom: 4px; }
+  .msg { font-size: 0.85rem; margin-top: 10px; padding: 8px 10px; border-radius: 6px; }
+  .msg.ok { background: var(--ok-bg); color: var(--ok-ink); }
+  .msg.err { background: var(--bad-bg); color: var(--bad-ink); }
+  .msg.warn { background: var(--warn-bg); color: var(--warn-ink); }
+
+  .history-row.current { font-weight: 700; }
+  table.evidence-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  table.evidence-table th, table.evidence-table td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .status-line { font-size: 0.85rem; color: var(--ink-3); margin-top: -6px; margin-bottom: 14px; }
+  .no-cap { background: var(--warn-bg); color: var(--warn-ink); border-radius: 8px; padding: 10px 12px; font-size: 0.88rem; margin-bottom: 14px; }
+</style>
+
+<div class="wrap" id="app">Loading…</div>
+
+<script>
+  const SEED_DATA = __SEED_DATA__;
+</script>
+<script>
+(function () {
+  "use strict";
+
+  // ---------------------------------------------------------------------
+  // Store: starts from the real seed data captured by the Vertical Slice
+  // codebase's own SQLite database (src/seed/seed-ubc-engineering.ts),
+  // then is overwritten by live reads from the `db` capability when
+  // available, so every viewer sees the current, shared state.
+  // ---------------------------------------------------------------------
+  const store = {
+    universities: {}, admissionCategories: {}, programs: {},
+    sources: {}, evidence: {}, facts: {}, conflicts: {}, sessions: {},
+  };
+  function loadSeed(data) {
+    for (const u of data.universities) store.universities[u.id] = u;
+    for (const c of data.admissionCategories) store.admissionCategories[c.id] = c;
+    for (const p of data.programs) store.programs[p.id] = p;
+    for (const s of data.sources) store.sources[s.id] = s;
+    for (const e of data.evidence) store.evidence[e.id] = e;
+    for (const f of data.facts) store.facts[f.id] = f;
+    for (const c of data.conflicts) store.conflicts[c.id] = c;
+    for (const s of data.sessions) store.sessions[s.id] = s;
+  }
+  loadSeed(SEED_DATA);
+
+  let db = null;
+  let userCap = null;
+  let viewerName = null;
+  let canWrite = false;
+
+  const COLLECTIONS = ["universities", "admissionCategories", "programs", "sources", "evidence", "facts", "conflicts", "sessions"];
+
+  async function initCapabilities() {
+    try {
+      if (window.claude && typeof window.claude.use === "function") {
+        db = await window.claude.use("db");
+        userCap = await window.claude.use("user");
+      }
+    } catch (e) { /* no-op: fall back to seed-only, read-only mode */ }
+
+    if (userCap) {
+      try {
+        canWrite = (await userCap.can("data.write")) !== false;
+        const me = userCap.me ? await userCap.me() : null;
+        viewerName = me && me.name ? me.name : null;
+      } catch (e) { /* leave defaults */ }
+    }
+
+    if (db) {
+      try {
+        await Promise.all(
+          COLLECTIONS.map(async (col) => {
+            const snap = await db.collection(col).get();
+            if (snap.size === 0) return; // nothing written yet for this collection — keep seed
+            const fresh = {};
+            for (const doc of snap.docs) fresh[doc.id] = doc.data();
+            store[col] = fresh;
+          })
+        );
+      } catch (e) { /* keep seed data if the live read fails */ }
+    }
+  }
+
+  // ---------------------------------------------------------------------
+  // Tiny helpers
+  // ---------------------------------------------------------------------
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const badge = (status) => `<span class="badge ${esc(status)}">${esc(String(status).replace(/_/g, " "))}</span>`;
+  const nowIso = () => new Date().toISOString();
+  const RESERVED_NAMES = ["ai", "system", "claude", "bot"];
+
+  function factsForEntity(type, id) {
+    return Object.values(store.facts).filter((f) => f.entityType === type && f.entityId === id);
+  }
+  function evidenceForSource(sourceId) {
+    return Object.values(store.evidence).filter((e) => e.sourceId === sourceId);
+  }
+  function sourcesForFacts(facts) {
+    const ids = new Set();
+    for (const f of facts) for (const eid of f.evidenceIds || []) {
+      const ev = store.evidence[eid];
+      if (ev) ids.add(ev.sourceId);
+    }
+    return Array.from(ids).map((id) => store.sources[id]).filter(Boolean);
+  }
+  function factHistory(fact) {
+    // Walk to the oldest ancestor, then forward.
+    let head = fact;
+    let guard = 0;
+    while (guard++ < 50) {
+      const predecessor = Object.values(store.facts).find((f) => f.supersededByFactId === head.id);
+      if (!predecessor) break;
+      head = predecessor;
+    }
+    const chain = [];
+    let cur = head;
+    guard = 0;
+    while (cur && guard++ < 50) {
+      chain.push(cur);
+      cur = cur.supersededByFactId ? store.facts[cur.supersededByFactId] : null;
+    }
+    return chain;
+  }
+
+  function applicabilityLine(a) {
+    if (!a) return "—";
+    const type = Array.isArray(a.applicantType) ? a.applicantType.join(", ") : a.applicantType;
+    const bits = [
+      `Applicant type: ${esc(type)}`,
+      `Province: ${esc(a.province || "—")}`,
+      `Campus: ${esc(a.campus || "—")}`,
+      `Intake: ${esc(a.intake || "—")}`,
+    ];
+    return bits.join("<br>");
+  }
+
+  // ---------------------------------------------------------------------
+  // Router
+  // ---------------------------------------------------------------------
+  function currentRoute() {
+    const hash = location.hash.replace(/^#\/?/, "");
+    const [type, id] = hash.split("/");
+    return { type: type || "home", id };
+  }
+
+  window.addEventListener("hashchange", render);
+
+  async function render() {
+    const app = document.getElementById("app");
+    const { type, id } = currentRoute();
+    try {
+      if (type === "home") app.innerHTML = viewHome();
+      else if (type === "university") app.innerHTML = viewUniversity(id);
+      else if (type === "admission-category") app.innerHTML = viewAdmissionCategory(id);
+      else if (type === "program") app.innerHTML = viewProgram(id);
+      else if (type === "source") app.innerHTML = viewSource(id);
+      else if (type === "fact") app.innerHTML = viewFact(id);
+      else if (type === "conflict") app.innerHTML = viewConflict(id);
+      else if (type === "session") app.innerHTML = viewSession(id);
+      else app.innerHTML = viewHome();
+    } catch (e) {
+      app.innerHTML = `<p class="msg err">Something went wrong rendering this page: ${esc(e.message)}</p><p><a href="#/">← Back home</a></p>`;
+    }
+    wireForms();
+  }
+
+  function crumbs(parts) {
+    return `<div class="crumbs">${parts
+      .map((p, i) => (i < parts.length - 1 ? `<a href="${p.href}">${esc(p.label)}</a><span class="sep">/</span>` : esc(p.label)))
+      .join("")}</div>`;
+  }
+
+  const capNote = () =>
+    db
+      ? ""
+      : `<div class="no-cap">This preview isn't connected to the shared database yet — showing the seeded research data read-only. Open the published page to review and verify.</div>`;
+
+  // ---------------------------------------------------------------------
+  // Views
+  // ---------------------------------------------------------------------
+  function viewHome() {
+    const universities = Object.values(store.universities);
+    const sessions = Object.values(store.sessions);
+    return `
+      ${capNote()}
+      <div class="eyebrow">Wango University Knowledge Base — Vertical Slice 1</div>
+      <h1>UBC Engineering Review</h1>
+      <p class="status-line">UBC × Undergraduate Engineering Admission × Engineering × 2027. Everything below traces back to a real, cited Source — nothing is pre-verified; that's your call.</p>
+
+      <h2>Universities</h2>
+      <div class="list">
+        ${universities
+          .map((u) => `<a class="row-link" href="#/university/${u.id}"><span class="row-title">${esc(u.name)}</span><span class="row-sub">${esc(u.province || "")}</span></a>`)
+          .join("")}
+      </div>
+
+      <h2>Research Sessions</h2>
+      <div class="list">
+        ${sessions
+          .map(
+            (s) =>
+              `<a class="row-link" href="#/session/${s.id}"><span class="row-title">${esc(s.prompt)}</span><span class="row-sub">${s.factsExtracted} facts · ${s.sourcesFound} sources · ${s.conflictsDetected} conflict(s)</span></a>`
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function viewUniversity(id) {
+    const u = store.universities[id];
+    if (!u) return `<p>Not found.</p>`;
+    const categories = Object.values(store.admissionCategories).filter((c) => c.universityId === id);
+    const facts = factsForEntity("UNIVERSITY", id);
+    return `
+      ${capNote()}
+      ${crumbs([{ href: "#/", label: "Home" }, { label: u.name }])}
+      <div class="eyebrow">University</div>
+      <h1>${esc(u.name)} ${u.shortName ? `(${esc(u.shortName)})` : ""}</h1>
+      <p class="status-line">${esc(u.province || "")} · <a href="${esc(u.officialAdmissionsUrl || "#")}">${esc(u.officialAdmissionsUrl || "")}</a></p>
+
+      <h2>Admission Categories</h2>
+      <div class="list">
+        ${categories.map((c) => `<a class="row-link" href="#/admission-category/${c.id}"><span class="row-title">${esc(c.name)}</span><span class="row-sub">${esc(c.categoryType)}</span></a>`).join("")}
+      </div>
+
+      ${facts.length ? `<h2>University-level Facts</h2>${factList(facts)}` : ""}
+    `;
+  }
+
+  function viewAdmissionCategory(id) {
+    const c = store.admissionCategories[id];
+    if (!c) return `<p>Not found.</p>`;
+    const u = store.universities[c.universityId];
+    const programs = Object.values(store.programs).filter((p) => p.primaryAdmissionCategoryId === id);
+    return `
+      ${capNote()}
+      ${crumbs([{ href: "#/", label: "Home" }, { href: `#/university/${u.id}`, label: u.name }, { label: c.name }])}
+      <div class="eyebrow">Admission Category · ${esc(c.categoryType)}</div>
+      <h1>${esc(c.name)}</h1>
+      <p class="status-line">${esc(c.description || "")}</p>
+      <h2>Programs</h2>
+      <div class="list">
+        ${programs.map((p) => `<a class="row-link" href="#/program/${p.id}"><span class="row-title">${esc(p.programName)}</span><span class="row-sub">${esc(p.degreeType || "")}</span></a>`).join("")}
+      </div>
+    `;
+  }
+
+  function factList(facts) {
+    return `<div class="list">
+      ${facts
+        .map(
+          (f) =>
+            `<a class="row-link" href="#/fact/${f.id}"><span><span class="row-title">${esc(f.fieldKey.replace(/_/g, " "))}</span><br><span class="row-sub">${esc(f.academicYear)}</span></span>${badge(f.verificationStatus)}</a>`
+        )
+        .join("")}
+    </div>`;
+  }
+
+  function viewProgram(id) {
+    const p = store.programs[id];
+    if (!p) return `<p>Not found.</p>`;
+    const c = store.admissionCategories[p.primaryAdmissionCategoryId];
+    const u = store.universities[p.universityId];
+    const facts = factsForEntity("PROGRAM", id).filter((f) => f.academicYear !== "SIMULATED TEST CASE" && !f.academicYear.startsWith("SIMULATED"));
+    const simFacts = factsForEntity("PROGRAM", id).filter((f) => f.academicYear === "SIMULATED TEST CASE" || f.academicYear.startsWith("SIMULATED"));
+    const sources = sourcesForFacts(factsForEntity("PROGRAM", id));
+    return `
+      ${capNote()}
+      ${crumbs([{ href: "#/", label: "Home" }, { href: `#/university/${u.id}`, label: u.name }, { href: `#/admission-category/${c.id}`, label: c.name }, { label: p.programName }])}
+      <div class="eyebrow">Program</div>
+      <h1>${esc(p.programName)} <span class="row-sub">(${esc(p.degreeType || "")})</span></h1>
+
+      <h2>Facts</h2>
+      ${factList(facts)}
+
+      <h2>Research Sources used for this Program</h2>
+      <div class="list">
+        ${sources.map((s) => `<a class="row-link" href="#/source/${s.id}"><span class="row-title">${esc(s.title)}</span>${badge(s.sourceStatus)}</a>`).join("")}
+      </div>
+
+      ${
+        simFacts.length
+          ? `<h2>Simulated test fixtures</h2>
+             <div class="simulated-flag">SIMULATED — NOT REAL UBC DATA. These exist only to demonstrate the Conflict and append-only History mechanics end to end.</div>
+             ${factList(simFacts)}`
+          : ""
+      }
+    `;
+  }
+
+  function viewSource(id) {
+    const s = store.sources[id];
+    if (!s) return `<p>Not found.</p>`;
+    const ev = evidenceForSource(id);
+    return `
+      ${capNote()}
+      ${crumbs([{ href: "#/", label: "Home" }, { label: "Source" }])}
+      ${s.notes && s.notes.startsWith("SIMULATED") ? `<div class="simulated-flag">${esc(s.notes)}</div>` : ""}
+      <div class="eyebrow">Source</div>
+      <h1>${esc(s.title)}</h1>
+      <dl class="kv">
+        <dt>URL</dt><dd><a href="${esc(s.url)}">${esc(s.url)}</a></dd>
+        <dt>Source type</dt><dd>${esc(s.sourceType)}</dd>
+        <dt>Publisher</dt><dd>${esc(s.publisher || "—")}</dd>
+        <dt>Academic year (as stated)</dt><dd>${esc(s.academicYear || "(not stated on the page)")}</dd>
+        <dt>Published / updated</dt><dd>${esc(s.publishedOrUpdatedDate || "(not captured)")}</dd>
+        <dt>Retrieved date</dt><dd>${esc(s.retrievedDate)}</dd>
+        <dt>Source status</dt><dd>${badge(s.sourceStatus)}</dd>
+      </dl>
+      <div class="reasoning"><strong>Why this status:</strong> ${esc(s.sourceStatusReasoning)}</div>
+
+      <h2>Evidence captured from this Source</h2>
+      <table class="evidence-table">
+        <thead><tr><th>Excerpt</th><th>Locator</th><th>Captured</th></tr></thead>
+        <tbody>
+          ${ev.map((e) => `<tr><td class="excerpt">“${esc(e.excerpt)}”</td><td class="locator">${esc(e.locator)}</td><td>${esc(e.capturedDate)}</td></tr>`).join("")}
+        </tbody>
+      </table>
+    `;
+  }
+
+  function viewSession(id) {
+    const s = store.sessions[id];
+    if (!s) return `<p>Not found.</p>`;
+    const sources = Object.values(store.sources).filter((src) => src.researchSessionId === id);
+    return `
+      ${capNote()}
+      ${crumbs([{ href: "#/", label: "Home" }, { label: "Research Session" }])}
+      <div class="eyebrow">Research Session</div>
+      <h1>${esc(s.prompt)}</h1>
+      <dl class="kv">
+        <dt>Research date</dt><dd>${esc(s.researchDate)}</dd>
+        <dt>Sources found</dt><dd>${s.sourcesFound}</dd>
+        <dt>Evidence extracted</dt><dd>${s.evidenceExtracted}</dd>
+        <dt>Facts extracted</dt><dd>${s.factsExtracted}</dd>
+        <dt>Conflicts detected</dt><dd>${s.conflictsDetected}</dd>
+        <dt>Review status</dt><dd>${esc(s.reviewStatus)}</dd>
+      </dl>
+      <h2>Gaps identified</h2>
+      <ul class="gap-list">${(s.gaps || []).map((g) => `<li>${esc(g)}</li>`).join("")}</ul>
+      <h2>Sources found</h2>
+      <div class="list">
+        ${sources.map((src) => `<a class="row-link" href="#/source/${src.id}"><span class="row-title">${esc(src.title)}</span>${badge(src.sourceStatus)}</a>`).join("")}
+      </div>
+    `;
+  }
+
+  function viewFact(id) {
+    const f = store.facts[id];
+    if (!f) return `<p>Not found.</p>`;
+    const isSim = f.academicYear.startsWith("SIMULATED");
+    const conflict = f.conflictId ? store.conflicts[f.conflictId] : null;
+    const history = factHistory(f);
+    const evidenceRows = (f.evidenceIds || [])
+      .map((eid) => {
+        const ev = store.evidence[eid];
+        if (!ev) return "";
+        const src = store.sources[ev.sourceId];
+        return `<tr><td class="excerpt">“${esc(ev.excerpt)}”</td><td class="locator">${esc(ev.locator)}</td><td><a href="#/source/${src.id}">${esc(src.title)}</a> ${badge(src.sourceStatus)}</td></tr>`;
+      })
+      .join("");
+
+    return `
+      ${capNote()}
+      ${crumbs([{ href: "#/", label: "Home" }, { label: "Fact" }])}
+      ${isSim ? `<div class="simulated-flag">SIMULATED — NOT REAL UBC REQUIREMENT. This Fact exists only to exercise the Conflict / History mechanics.</div>` : ""}
+      <div class="eyebrow">Fact</div>
+      <h1>${esc(f.fieldKey.replace(/_/g, " "))}</h1>
+
+      <dl class="kv">
+        <dt>Value</dt><dd>${esc(f.value)}</dd>
+        <dt>Academic Year</dt><dd>${esc(f.academicYear)}</dd>
+        <dt>Applicability</dt><dd>${applicabilityLine(f.applicability)}</dd>
+        <dt>Verification Status</dt><dd>${badge(f.verificationStatus)}</dd>
+        <dt>Extracted by</dt><dd>${esc(f.extractedBy)}</dd>
+        <dt>Confirmed by</dt><dd>${esc(f.confirmedBy || "— (not yet reviewed by a human)")}</dd>
+        <dt>Last verified date</dt><dd>${esc(f.lastVerifiedDate || "—")}</dd>
+      </dl>
+
+      ${
+        conflict
+          ? `<div class="${conflict.isSimulated ? "simulated-flag" : "msg warn"}">
+              ${conflict.isSimulated ? esc(conflict.simulatedLabel) + ". " : ""}This Fact is part of a Conflict: ${esc(conflict.conflictDescription)}
+              <br><a href="#/conflict/${conflict.id}">Review the Conflict →</a>
+            </div>`
+          : ""
+      }
+
+      <h2>Evidence backing this Fact</h2>
+      ${
+        (f.evidenceIds || []).length
+          ? `<table class="evidence-table"><thead><tr><th>Excerpt</th><th>Locator</th><th>Source</th></tr></thead><tbody>${evidenceRows}</tbody></table>`
+          : `<p><em>No Evidence — this Fact is NOT_VERIFIED by design (No Source, No Fact).</em></p>`
+      }
+
+      <h2>History (append-only)</h2>
+      <table class="evidence-table">
+        <thead><tr><th>Academic Year</th><th>Value</th><th>Status</th></tr></thead>
+        <tbody>
+          ${history
+            .map(
+              (h) =>
+                `<tr class="history-row ${h.id === f.id ? "current" : ""}"><td>${esc(h.academicYear)}</td><td>${h.id === f.id ? esc(h.value) : `<a href="#/fact/${h.id}">${esc(h.value)}</a>`}</td><td>${badge(h.verificationStatus)}</td></tr>`
+            )
+            .join("")}
+        </tbody>
+      </table>
+
+      ${!conflict ? reviewForm(f) : conflict.resolutionStatus === "OPEN" || conflict.resolutionStatus === "HUMAN_REVIEW" ? `<p>This Fact is part of an unresolved Conflict — review it from the <a href="#/conflict/${conflict.id}">Conflict page</a> so both sides are resolved together.</p>` : ""}
+    `;
+  }
+
+  function reviewForm(f) {
+    return `
+      <form class="review" data-fact-id="${f.id}" id="review-form">
+        <h3>Review this Fact</h3>
+        <p class="status-line" style="margin-top:0">Only a signed-in human reviewer can set VERIFIED — this runs the same checks as the codebase's <code>verifyFact()</code> (No Source → No Fact; a SUPERSEDED source blocks VERIFIED).</p>
+        ${
+          viewerName
+            ? `<p class="status-line">Reviewing as <strong>${esc(viewerName)}</strong>.</p>`
+            : `<div class="field"><label for="reviewerName">Your name</label><input type="text" id="reviewerName" placeholder="Wango" required></div>`
+        }
+        <div class="radio-row">
+          <label><input type="radio" name="status" value="VERIFIED" checked> VERIFY</label>
+          <label><input type="radio" name="status" value="NEEDS_REVIEW"> Keep NEEDS REVIEW</label>
+          <label><input type="radio" name="status" value="NOT_VERIFIED"> Mark NOT VERIFIED</label>
+        </div>
+        <button type="submit" ${db && canWrite === false ? "disabled" : ""}>Submit review</button>
+        <div class="form-msg"></div>
+      </form>
+    `;
+  }
+
+  function viewConflict(id) {
+    const c = store.conflicts[id];
+    if (!c) return `<p>Not found.</p>`;
+    const facts = c.affectedFactIds.map((fid) => store.facts[fid]).filter(Boolean);
+    const sourceA = store.sources[c.sourceAId];
+    const sourceB = store.sources[c.sourceBId];
+    const isOpen = c.resolutionStatus === "OPEN" || c.resolutionStatus === "HUMAN_REVIEW";
+    return `
+      ${capNote()}
+      ${crumbs([{ href: "#/", label: "Home" }, { label: "Conflict" }])}
+      ${c.isSimulated ? `<div class="simulated-flag">${esc(c.simulatedLabel)}. This is a test fixture, not a real disagreement among UBC sources.</div>` : ""}
+      <div class="eyebrow">Conflict</div>
+      <h1>${esc(c.conflictDescription)}</h1>
+      <dl class="kv">
+        <dt>Detected date</dt><dd>${esc(c.detectedDate)}</dd>
+        <dt>Resolution status</dt><dd>${esc(c.resolutionStatus)}</dd>
+        <dt>Source A</dt><dd><a href="#/source/${sourceA.id}">${esc(sourceA.title)}</a></dd>
+        <dt>Source B</dt><dd><a href="#/source/${sourceB.id}">${esc(sourceB.title)}</a></dd>
+        ${c.resolvedBy ? `<dt>Resolved by</dt><dd>${esc(c.resolvedBy)}</dd><dt>Resolution notes</dt><dd>${esc(c.resolutionNotes || "")}</dd>` : ""}
+      </dl>
+
+      <h2>Affected Facts</h2>
+      <div class="list">
+        ${facts.map((f) => `<a class="row-link" href="#/fact/${f.id}"><span class="row-title">${esc(f.value)}</span>${badge(f.verificationStatus)}</a>`).join("")}
+      </div>
+
+      ${
+        isOpen
+          ? `<form class="review" data-conflict-id="${c.id}" id="conflict-form">
+              <h3>Resolve this Conflict</h3>
+              <p class="status-line" style="margin-top:0">Only a signed-in human may resolve a Conflict. AI created this record but cannot pick a winner.</p>
+              ${
+                viewerName
+                  ? `<p class="status-line">Resolving as <strong>${esc(viewerName)}</strong>.</p>`
+                  : `<div class="field"><label for="resolverName">Your name</label><input type="text" id="resolverName" placeholder="Wango" required></div>`
+              }
+              <div class="field">
+                <label for="winningFactId">Winning Fact (used only if resolving to VERIFIED)</label>
+                <select id="winningFactId">
+                  ${facts.map((f) => `<option value="${f.id}">${esc(f.value)}</option>`).join("")}
+                </select>
+              </div>
+              <div class="radio-row" style="flex-direction:column; align-items:flex-start;">
+                <label><input type="radio" name="resolutionStatus" value="RESOLVED_VERIFIED" checked> The selected Fact is correct → VERIFIED (the other becomes NOT_VERIFIED)</label>
+                <label><input type="radio" name="resolutionStatus" value="RESOLVED_STILL_CONFLICTING"> Keep both on record — still conflicting</label>
+              </div>
+              <div class="field">
+                <label for="resolutionNotes">Notes</label>
+                <textarea id="resolutionNotes" rows="2" required></textarea>
+              </div>
+              <button type="submit" ${db && canWrite === false ? "disabled" : ""}>Submit resolution</button>
+              <div class="form-msg"></div>
+            </form>`
+          : ""
+      }
+    `;
+  }
+
+  // ---------------------------------------------------------------------
+  // Writes — mirrors the invariants enforced server-side in src/db/repo.ts
+  // ---------------------------------------------------------------------
+  function wireForms() {
+    const reviewForm = document.getElementById("review-form");
+    if (reviewForm) reviewForm.addEventListener("submit", onSubmitReview);
+    const conflictForm = document.getElementById("conflict-form");
+    if (conflictForm) conflictForm.addEventListener("submit", onSubmitConflict);
+  }
+
+  function formMsg(form, kind, text) {
+    const el = form.querySelector(".form-msg");
+    el.className = `form-msg msg ${kind}`;
+    el.textContent = text;
+  }
+
+  async function onSubmitReview(ev) {
+    ev.preventDefault();
+    const form = ev.target;
+    const factId = form.dataset.factId;
+    const fact = store.facts[factId];
+    const status = form.querySelector('input[name="status"]:checked').value;
+    const nameInput = form.querySelector("#reviewerName");
+    const reviewedBy = viewerName || (nameInput ? nameInput.value.trim() : "");
+
+    if (!reviewedBy) return formMsg(form, "err", "A reviewer name is required.");
+    if (RESERVED_NAMES.includes(reviewedBy.toLowerCase())) return formMsg(form, "err", `'${reviewedBy}' is a reserved non-human identity — a Fact can only be verified by a named human.`);
+
+    if (status === "VERIFIED") {
+      if (!fact.evidenceIds || fact.evidenceIds.length === 0) return formMsg(form, "err", "No Source, No Fact: cannot VERIFY a Fact with no Evidence.");
+      const sources = fact.evidenceIds.map((eid) => store.evidence[eid]).filter(Boolean).map((e) => store.sources[e.sourceId]).filter(Boolean);
+      for (const s of sources) {
+        if (s.sourceStatus === "SUPERSEDED") return formMsg(form, "err", `Cannot VERIFY: Source "${s.title}" is SUPERSEDED.`);
+      }
+      const warnSources = sources.filter((s) => s.sourceStatus === "POSSIBLY_OUTDATED" || s.sourceStatus === "UNKNOWN");
+      if (warnSources.length) {
+        const ok = confirm(`Source status warning: ${warnSources.map((s) => `"${s.title}" is ${s.sourceStatus}`).join("; ")}. Verifying means you are personally attesting its currency. Continue?`);
+        if (!ok) return;
+      }
+    }
+
+    if (!db) return formMsg(form, "err", "Not connected to the shared database in this preview — open the published page to submit a real review.");
+    if (canWrite === false) return formMsg(form, "err", "This view does not have write access.");
+
+    try {
+      await db.doc("facts/" + factId).update({
+        verificationStatus: status,
+        confirmedBy: reviewedBy,
+        lastVerifiedDate: status === "NEEDS_REVIEW" ? null : nowIso().slice(0, 10),
+      });
+      fact.verificationStatus = status;
+      fact.confirmedBy = reviewedBy;
+      fact.lastVerifiedDate = status === "NEEDS_REVIEW" ? null : nowIso().slice(0, 10);
+      formMsg(form, "ok", `Saved — this Fact is now ${status.replace(/_/g, " ")}.`);
+      setTimeout(render, 500);
+    } catch (e) {
+      formMsg(form, "err", "Could not save: " + e.message);
+    }
+  }
+
+  async function onSubmitConflict(ev) {
+    ev.preventDefault();
+    const form = ev.target;
+    const conflictId = form.dataset.conflictId;
+    const conflict = store.conflicts[conflictId];
+    const resolutionStatus = form.querySelector('input[name="resolutionStatus"]:checked').value;
+    const nameInput = form.querySelector("#resolverName");
+    const resolvedBy = viewerName || (nameInput ? nameInput.value.trim() : "");
+    const notes = form.querySelector("#resolutionNotes").value.trim();
+    const winningFactId = form.querySelector("#winningFactId").value;
+
+    if (!resolvedBy) return formMsg(form, "err", "A reviewer name is required.");
+    if (RESERVED_NAMES.includes(resolvedBy.toLowerCase())) return formMsg(form, "err", `'${resolvedBy}' is a reserved non-human identity — only a human may resolve a Conflict.`);
+    if (!notes) return formMsg(form, "err", "Resolution notes are required.");
+
+    if (!db) return formMsg(form, "err", "Not connected to the shared database in this preview — open the published page to submit a real resolution.");
+    if (canWrite === false) return formMsg(form, "err", "This view does not have write access.");
+
+    try {
+      if (resolutionStatus === "RESOLVED_VERIFIED") {
+        const winningFact = store.facts[winningFactId];
+        const sources = (winningFact.evidenceIds || []).map((eid) => store.evidence[eid]).filter(Boolean).map((e) => store.sources[e.sourceId]).filter(Boolean);
+        if (sources.some((s) => s.sourceStatus === "SUPERSEDED")) return formMsg(form, "err", "Cannot VERIFY: the winning Fact's source is SUPERSEDED.");
+        await db.doc("facts/" + winningFactId).update({ verificationStatus: "VERIFIED", confirmedBy: resolvedBy, lastVerifiedDate: nowIso().slice(0, 10) });
+        winningFact.verificationStatus = "VERIFIED";
+        winningFact.confirmedBy = resolvedBy;
+        winningFact.lastVerifiedDate = nowIso().slice(0, 10);
+        for (const fid of conflict.affectedFactIds) {
+          if (fid !== winningFactId) {
+            await db.doc("facts/" + fid).update({ verificationStatus: "NOT_VERIFIED" });
+            store.facts[fid].verificationStatus = "NOT_VERIFIED";
+          }
+        }
+      }
+      await db.doc("conflicts/" + conflictId).update({
+        resolutionStatus,
+        resolutionNotes: notes,
+        resolvedBy,
+        resolvedDate: nowIso().slice(0, 10),
+      });
+      conflict.resolutionStatus = resolutionStatus;
+      conflict.resolutionNotes = notes;
+      conflict.resolvedBy = resolvedBy;
+      formMsg(form, "ok", "Conflict resolution saved.");
+      setTimeout(render, 500);
+    } catch (e) {
+      formMsg(form, "err", "Could not save: " + e.message);
+    }
+  }
+
+  // ---------------------------------------------------------------------
+  // Boot
+  // ---------------------------------------------------------------------
+  (async function boot() {
+    await initCapabilities();
+    render();
+  })();
+})();
+</script>

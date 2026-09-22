@@ -1,0 +1,1249 @@
+<title>UBC Engineering Review</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600;6..72,700&display=swap">
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --surface-2: #eef0f3;
+    --border: #d7dbe1;
+    --ink: #171b21;
+    --ink-2: #4b5563;
+    --ink-3: #6b7280;
+    --accent: #1f5fae;
+    --accent-ink: #ffffff;
+    --ok-bg: #e1f3e6; --ok-ink: #166534;
+    --warn-bg: #fdf1d8; --warn-ink: #8a5b00;
+    --neutral-bg: #eceef1; --neutral-ink: #52525b;
+    --bad-bg: #fbe1df; --bad-ink: #9f2b22;
+    --sim-bg: #ecebfb; --sim-ink: #4338ca; --sim-border: #c7c4f2;
+    --font-head: "Newsreader", Georgia, "Times New Roman", serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12161b; --surface: #191f26; --surface-2: #1f2730; --border: #303a45;
+      --ink: #e7eaee; --ink-2: #b7bfc9; --ink-3: #8b95a1;
+      --accent: #7aa8e6; --accent-ink: #0d1520;
+      --ok-bg: #143024; --ok-ink: #6fd99a;
+      --warn-bg: #362a10; --warn-ink: #e7b955;
+      --neutral-bg: #232b34; --neutral-ink: #a3acb7;
+      --bad-bg: #391c1c; --bad-ink: #f0968c;
+      --sim-bg: #211f38; --sim-ink: #b3aef2; --sim-border: #3a3568;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12161b; --surface: #191f26; --surface-2: #1f2730; --border: #303a45;
+    --ink: #e7eaee; --ink-2: #b7bfc9; --ink-3: #8b95a1;
+    --accent: #7aa8e6; --accent-ink: #0d1520;
+    --ok-bg: #143024; --ok-ink: #6fd99a;
+    --warn-bg: #362a10; --warn-ink: #e7b955;
+    --neutral-bg: #232b34; --neutral-ink: #a3acb7;
+    --bad-bg: #391c1c; --bad-ink: #f0968c;
+    --sim-bg: #211f38; --sim-ink: #b3aef2; --sim-border: #3a3568;
+  }
+
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-body); padding-inline: 16px; padding-block: 20px 60px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { font-family: var(--font-head); font-weight: 600; text-wrap: balance; margin: 0 0 10px; }
+  h1 { font-size: 1.6rem; }
+  h2 { font-size: 1.15rem; margin-top: 28px; color: var(--ink); }
+  h3 { font-size: 1rem; margin-top: 18px; }
+  .wrap { max-width: 760px; margin: 0 auto; }
+
+  .eyebrow { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 4px; }
+  .crumbs { font-size: 0.85rem; color: var(--ink-3); margin-bottom: 18px; }
+  .crumbs a { color: var(--ink-2); }
+  .crumbs .sep { margin: 0 6px; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+  .list { display: flex; flex-direction: column; gap: 8px; }
+  .row-link { display: flex; justify-content: space-between; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; }
+  .row-link:hover { border-color: var(--accent); }
+  .row-title { font-weight: 600; }
+  .row-sub { color: var(--ink-3); font-size: 0.82rem; }
+
+  .badge { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 0.74rem; font-weight: 600; white-space: nowrap; }
+  .badge.VERIFIED { background: var(--ok-bg); color: var(--ok-ink); }
+  .badge.NEEDS_REVIEW { background: var(--warn-bg); color: var(--warn-ink); }
+  .badge.NOT_VERIFIED { background: var(--neutral-bg); color: var(--neutral-ink); }
+  .badge.CONFLICTING_SOURCES { background: var(--bad-bg); color: var(--bad-ink); }
+  .badge.CURRENT { background: var(--ok-bg); color: var(--ok-ink); }
+  .badge.POSSIBLY_OUTDATED { background: var(--warn-bg); color: var(--warn-ink); }
+  .badge.SUPERSEDED { background: var(--bad-bg); color: var(--bad-ink); }
+  .badge.UNKNOWN { background: var(--neutral-bg); color: var(--neutral-ink); }
+
+  dl.kv { display: grid; grid-template-columns: 160px 1fr; gap: 8px 14px; margin: 0; font-size: 0.92rem; }
+  dl.kv dt { color: var(--ink-3); }
+  dl.kv dd { margin: 0; }
+  @media (max-width: 480px) { dl.kv { grid-template-columns: 1fr; } dl.kv dt { margin-top: 8px; } }
+
+  .excerpt { font-style: italic; color: var(--ink-2); }
+  .locator { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-3); }
+  .reasoning { font-size: 0.88rem; color: var(--ink-2); background: var(--surface-2); border-radius: 8px; padding: 10px 12px; margin-top: 6px; }
+
+  .simulated-flag { background: var(--sim-bg); border: 1px solid var(--sim-border); color: var(--sim-ink); border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; margin-bottom: 14px; font-weight: 600; }
+  .gap-list { font-size: 0.88rem; color: var(--ink-2); padding-left: 20px; }
+  .gap-list li { margin-bottom: 6px; }
+
+  form.review { border: 1px solid var(--border); background: var(--surface); border-radius: 10px; padding: 14px 16px; margin-top: 16px; }
+  form.review h3 { margin-top: 0; }
+  .radio-row { display: flex; flex-wrap: wrap; gap: 14px; margin: 10px 0; font-size: 0.92rem; }
+  .radio-row label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  input[type="text"], textarea, select { font: inherit; font-size: 0.9rem; padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--ink); width: 100%; }
+  button { font: inherit; font-weight: 600; padding: 8px 16px; border-radius: 7px; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); cursor: pointer; }
+  button:hover { opacity: 0.9; }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .field { margin-bottom: 10px; }
+  .field label { display: block; font-size: 0.82rem; color: var(--ink-3); margin-bottom: 4px; }
+  .msg { font-size: 0.85rem; margin-top: 10px; padding: 8px 10px; border-radius: 6px; }
+  .msg.ok { background: var(--ok-bg); color: var(--ok-ink); }
+  .msg.err { background: var(--bad-bg); color: var(--bad-ink); }
+  .msg.warn { background: var(--warn-bg); color: var(--warn-ink); }
+
+  .history-row.current { font-weight: 700; }
+  table.evidence-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  table.evidence-table th, table.evidence-table td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .status-line { font-size: 0.85rem; color: var(--ink-3); margin-top: -6px; margin-bottom: 14px; }
+  .no-cap { background: var(--warn-bg); color: var(--warn-ink); border-radius: 8px; padding: 10px 12px; font-size: 0.88rem; margin-bottom: 14px; }
+</style>
+
+<div class="wrap" id="app">Loading…</div>
+
+<script>
+  const SEED_DATA = {
+  "universities": [
+    {
+      "id": "4fbf2422-2557-40ec-a998-bd02ff355fc2",
+      "name": "University of British Columbia",
+      "shortName": "UBC",
+      "province": "British Columbia",
+      "officialAdmissionsUrl": "https://you.ubc.ca/"
+    }
+  ],
+  "admissionCategories": [
+    {
+      "id": "80f1af32-4a2d-4ce4-ac17-0dda6eb4b82a",
+      "universityId": "4fbf2422-2557-40ec-a998-bd02ff355fc2",
+      "name": "Direct Entry — Engineering (Bachelor of Applied Science)",
+      "categoryType": "Direct-entry-program",
+      "description": "The path a Grade 12 (or equivalent) applicant applies through to enter UBC's Bachelor of Applied Science (Engineering) directly from secondary school, as opposed to transferring in from another faculty or institution."
+    }
+  ],
+  "programs": [
+    {
+      "id": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "universityId": "4fbf2422-2557-40ec-a998-bd02ff355fc2",
+      "primaryAdmissionCategoryId": "80f1af32-4a2d-4ce4-ac17-0dda6eb4b82a",
+      "programName": "Engineering",
+      "degreeType": "Bachelor of Applied Science (BASc)"
+    }
+  ],
+  "sources": [
+    {
+      "id": "04a520dd-b600-4968-ab03-db9b4a9b405e",
+      "title": "UBC Undergraduate Admissions — Dates and Deadlines",
+      "url": "https://you.ubc.ca/applying-ubc/dates-deadlines/",
+      "sourceType": "UNIVERSITY_OFFICIAL",
+      "publisher": "University of British Columbia — Undergraduate Admissions",
+      "academicYear": "2027 Entry (Winter Session September 2027 – April 2028)",
+      "publishedOrUpdatedDate": "2026-09-10",
+      "retrievedDate": "2026-09-21",
+      "sourceStatus": "CURRENT",
+      "sourceStatusReasoning": "The page's own dates table is explicitly labeled 'Winter Session (September 2027 to April 2028)' — the exact cycle this research targets, not inferred by us. Page metadata shows last-modified 2026-09-10T21:03:23Z, 11 days before retrieval. Marked CURRENT because the content is both self-labeled with the target academic year AND recently modified — not merely because the domain is ubc.ca.",
+      "notes": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e"
+    },
+    {
+      "id": "d78223cd-6e01-42a7-93fa-f2dc7becaa32",
+      "title": "UBC Engineering — How to Apply (Undergraduate)",
+      "url": "https://engineering.ubc.ca/admissions/undergraduate/how-to-apply",
+      "sourceType": "UNIVERSITY_OFFICIAL",
+      "publisher": "UBC Faculty of Applied Science — Engineering",
+      "academicYear": null,
+      "publishedOrUpdatedDate": null,
+      "retrievedDate": "2026-09-21",
+      "sourceStatus": "UNKNOWN",
+      "sourceStatusReasoning": "No explicit academic-year label or last-modified metadata was captured for this specific page during retrieval. Its described application steps and personal-profile requirement are consistent with the Sept-2027 cycle confirmed on the Dates & Deadlines source, but consistency with another source is not the same as a confirmed update date on this page itself. Marked UNKNOWN rather than CURRENT — being on engineering.ubc.ca does not earn it CURRENT by default.",
+      "notes": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e"
+    },
+    {
+      "id": "c71690b4-78f2-4328-9f07-3adf4d167ec1",
+      "title": "UBC Academic Calendar — Bachelor of Applied Science: Admission (2026/27 Calendar)",
+      "url": "https://vancouver.calendar.ubc.ca/faculties-colleges-and-schools/faculty-applied-science/bachelor-applied-science/admission",
+      "sourceType": "UNIVERSITY_OFFICIAL",
+      "publisher": "University of British Columbia — Vancouver Academic Calendar",
+      "academicYear": "2026/27 Calendar",
+      "publishedOrUpdatedDate": null,
+      "retrievedDate": "2026-09-21",
+      "sourceStatus": "POSSIBLY_OUTDATED",
+      "sourceStatusReasoning": "Confirmed via a separate search of vancouver.calendar.ubc.ca that this is the most recently published UBC Vancouver Academic Calendar edition as of retrieval — no 2027/28 edition exists yet. But the page is explicitly labeled '2026/27 Calendar', one cycle behind the September-2027-entry cohort this research targets. UBC has not confirmed whether Engineering's admission requirements for 2027/28 will be identical. Marked POSSIBLY_OUTDATED relative to THIS research's target year — not because the page is stale in absolute terms (it is UBC's current live calendar), but because 'the current calendar' and 'confirmed for the cycle being researched' are two different claims, and this project must not conflate them.",
+      "notes": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e"
+    },
+    {
+      "id": "204f5e58-951c-4c85-8644-990ffbd46a19",
+      "title": "UBC Academic Calendar — English Language Proficiency Tests",
+      "url": "https://vancouver.calendar.ubc.ca/admissions/english-language-admission-standard/english-language-proficiency-tests",
+      "sourceType": "UNIVERSITY_OFFICIAL",
+      "publisher": "University of British Columbia — Vancouver Academic Calendar",
+      "academicYear": null,
+      "publishedOrUpdatedDate": null,
+      "retrievedDate": "2026-09-21",
+      "sourceStatus": "UNKNOWN",
+      "sourceStatusReasoning": "The page does not state which Academic Calendar edition it belongs to, and a cross-reference search did not conclusively confirm 2025/26 vs 2026/27. Marked UNKNOWN rather than assumed CURRENT, per the explicit instruction not to default to CURRENT just because the domain is ubc.ca.",
+      "notes": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e"
+    },
+    {
+      "id": "c88b4ebc-fed3-41d2-9d7b-080eb091a0e6",
+      "title": "SIMULATED SOURCE A — NOT REAL UBC PAGE (test fixture for Conflict handling)",
+      "url": "https://example-simulated.invalid/source-a",
+      "sourceType": "UNIVERSITY_OFFICIAL",
+      "publisher": "SIMULATED — test fixture, not a real publisher",
+      "academicYear": null,
+      "publishedOrUpdatedDate": null,
+      "retrievedDate": "2026-09-21",
+      "sourceStatus": "CURRENT",
+      "sourceStatusReasoning": "SIMULATED fixture — not a real retrieval; status is a placeholder for testing the Conflict pipeline only.",
+      "notes": "SIMULATED — NOT REAL UBC SOURCE",
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e"
+    },
+    {
+      "id": "1dec3ce6-f26d-4e24-98b8-c8aa40508db8",
+      "title": "SIMULATED SOURCE B — NOT REAL UBC PAGE (test fixture for Conflict handling)",
+      "url": "https://example-simulated.invalid/source-b",
+      "sourceType": "UNIVERSITY_OFFICIAL",
+      "publisher": "SIMULATED — test fixture, not a real publisher",
+      "academicYear": null,
+      "publishedOrUpdatedDate": null,
+      "retrievedDate": "2026-09-21",
+      "sourceStatus": "CURRENT",
+      "sourceStatusReasoning": "SIMULATED fixture — not a real retrieval; status is a placeholder for testing the Conflict pipeline only.",
+      "notes": "SIMULATED — NOT REAL UBC SOURCE",
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e"
+    },
+    {
+      "id": "a85f45f6-e660-4d37-9a55-1d07ee5111ab",
+      "title": "SIMULATED SOURCE C — NOT REAL UBC PAGE (test fixture for append-only history)",
+      "url": "https://example-simulated.invalid/source-c",
+      "sourceType": "UNIVERSITY_OFFICIAL",
+      "publisher": "SIMULATED — test fixture, not a real publisher",
+      "academicYear": null,
+      "publishedOrUpdatedDate": null,
+      "retrievedDate": "2026-09-21",
+      "sourceStatus": "CURRENT",
+      "sourceStatusReasoning": "SIMULATED fixture — not a real retrieval; status is a placeholder for testing the append-only history mechanic only.",
+      "notes": "SIMULATED — NOT REAL UBC SOURCE",
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "229570ef-d5d7-4932-bc17-8bcfab0775de",
+      "sourceId": "04a520dd-b600-4968-ab03-db9b4a9b405e",
+      "excerpt": "Online application opens for Winter Session (September 2027 to April 2028) and Summer Session (May to August 2027).",
+      "locator": "you.ubc.ca/applying-ubc/dates-deadlines/ — dates table, 'Preparation' row, first entry",
+      "capturedDate": "2026-09-21",
+      "notes": null
+    },
+    {
+      "id": "3ce0c8c4-8eb6-42ff-b057-559289bb70a4",
+      "sourceId": "04a520dd-b600-4968-ab03-db9b4a9b405e",
+      "excerpt": "January 15, 2027 (11:59 p.m. PST) — Application deadline",
+      "locator": "you.ubc.ca/applying-ubc/dates-deadlines/ — dates table, 'Application deadline' row",
+      "capturedDate": "2026-09-21",
+      "notes": null
+    },
+    {
+      "id": "a3ec16eb-94c9-40ca-965f-385cef04bdd1",
+      "sourceId": "d78223cd-6e01-42a7-93fa-f2dc7becaa32",
+      "excerpt": "High school students will submit a personal profile, which requires short essay responses and share the names of two references.",
+      "locator": "engineering.ubc.ca/admissions/undergraduate/how-to-apply — application steps section, personal-profile paragraph",
+      "capturedDate": "2026-09-21",
+      "notes": null
+    },
+    {
+      "id": "23b31e95-3fe2-4a6d-a4e3-c4c93748dc99",
+      "sourceId": "c71690b4-78f2-4328-9f07-3adf4d167ec1",
+      "excerpt": "applicants must have completed mathematics, physics, and chemistry at the BC Grade 12-level, or the equivalent.",
+      "locator": "vancouver.calendar.ubc.ca/faculties-colleges-and-schools/faculty-applied-science/bachelor-applied-science/admission — Admission section, BC/Yukon Grade 12 curriculum paragraph",
+      "capturedDate": "2026-09-21",
+      "notes": null
+    },
+    {
+      "id": "e72f2a73-abc7-4769-868a-df22282978ad",
+      "sourceId": "c71690b4-78f2-4328-9f07-3adf4d167ec1",
+      "excerpt": "Students will be selected on the basis of their standing in Grade 12 courses in mathematics, chemistry, physics, and English.",
+      "locator": "vancouver.calendar.ubc.ca/faculties-colleges-and-schools/faculty-applied-science/bachelor-applied-science/admission — Admission section, selection-criteria paragraph immediately following the course requirement",
+      "capturedDate": "2026-09-21",
+      "notes": null
+    },
+    {
+      "id": "709192ae-97f1-4908-9ca6-7c85551d326d",
+      "sourceId": "c71690b4-78f2-4328-9f07-3adf4d167ec1",
+      "excerpt": "An overall average of at least 65%, including any failed courses, is required. ... Applicants must achieve an average of at least 70% in each of these subject areas [chemistry, mathematics, physics].",
+      "locator": "vancouver.calendar.ubc.ca/faculties-colleges-and-schools/faculty-applied-science/bachelor-applied-science/admission — Admission section, Post-Secondary Transfer Requirements paragraph",
+      "capturedDate": "2026-09-21",
+      "notes": null
+    },
+    {
+      "id": "1b739923-c33b-4118-93e6-9dd5830dc585",
+      "sourceId": "204f5e58-951c-4c85-8644-990ffbd46a19",
+      "excerpt": "IELTS (Academic): 6.5 with no part less than 6.0",
+      "locator": "vancouver.calendar.ubc.ca/admissions/english-language-admission-standard/english-language-proficiency-tests — proficiency test score table, IELTS row",
+      "capturedDate": "2026-09-21",
+      "notes": null
+    },
+    {
+      "id": "410cfe09-d9cb-477d-b4ff-bfc5ccd98d64",
+      "sourceId": "c88b4ebc-fed3-41d2-9d7b-080eb091a0e6",
+      "excerpt": "SIMULATED: 'Chemistry 12 is specifically required; general science credit is not accepted.'",
+      "locator": "SIMULATED locator — test fixture, no real page exists",
+      "capturedDate": "2026-09-21",
+      "notes": "SIMULATED — NOT REAL UBC EVIDENCE"
+    },
+    {
+      "id": "fea9c789-446c-45b0-8154-0f23b5affa42",
+      "sourceId": "1dec3ce6-f26d-4e24-98b8-c8aa40508db8",
+      "excerpt": "SIMULATED: 'Chemistry 12 or an equivalent Grade 12 laboratory science course is accepted.'",
+      "locator": "SIMULATED locator — test fixture, no real page exists",
+      "capturedDate": "2026-09-21",
+      "notes": "SIMULATED — NOT REAL UBC EVIDENCE"
+    },
+    {
+      "id": "88192466-5b1d-419f-9f1f-ed0cfe583e32",
+      "sourceId": "a85f45f6-e660-4d37-9a55-1d07ee5111ab",
+      "excerpt": "SIMULATED: 'Test value for the 2026 cycle.'",
+      "locator": "SIMULATED locator — test fixture, no real page exists",
+      "capturedDate": "2026-09-21",
+      "notes": "SIMULATED — NOT REAL UBC EVIDENCE"
+    },
+    {
+      "id": "9ed718d4-da33-479b-b32b-6f67a1ac2d8e",
+      "sourceId": "a85f45f6-e660-4d37-9a55-1d07ee5111ab",
+      "excerpt": "SIMULATED: 'Test value for the 2027 cycle (supersedes the 2026 value).'",
+      "locator": "SIMULATED locator — test fixture, no real page exists",
+      "capturedDate": "2026-09-21",
+      "notes": "SIMULATED — NOT REAL UBC EVIDENCE"
+    }
+  ],
+  "facts": [
+    {
+      "id": "488cc522-6240-4386-ac91-e89c79a5f06b",
+      "entityType": "UNIVERSITY",
+      "entityId": "4fbf2422-2557-40ec-a998-bd02ff355fc2",
+      "fieldKey": "english_language_proficiency_requirement",
+      "value": "International applicants may demonstrate English competence via IELTS 6.5 overall (no band below 6.0), among other accepted pathways (TOEFL iBT 90, Duolingo English Test 125, PTE 65, CAEL 70, Cambridge English 180, or qualifying prior education/coursework — see evidence for the full list).",
+      "academicYear": "UBC Academic Calendar (edition not conclusively confirmed — see Source 'English Language Proficiency Tests' reasoning)",
+      "applicability": {
+        "applicantType": [
+          "International"
+        ],
+        "province": null,
+        "campus": null,
+        "admissionCategoryId": null,
+        "intake": null
+      },
+      "verificationStatus": "NEEDS_REVIEW",
+      "conflictId": null,
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [
+        "1b739923-c33b-4118-93e6-9dd5830dc585"
+      ],
+      "createdAt": "2026-09-21T08:36:22.330Z",
+      "updatedAt": "2026-09-21T08:36:22.330Z"
+    },
+    {
+      "id": "e7ebd204-6fa2-45ad-89ac-af4db43669d7",
+      "entityType": "PROGRAM",
+      "entityId": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "fieldKey": "application_deadline",
+      "value": "January 15, 2027, 11:59 p.m. Pacific Time — application deadline for Winter Session (September 2027 – April 2028) entry.",
+      "academicYear": "2027 Entry (Winter Session Sept 2027 – Apr 2028)",
+      "applicability": {
+        "applicantType": "UNSPECIFIED — confirm applicability",
+        "province": null,
+        "campus": "Vancouver",
+        "admissionCategoryId": "80f1af32-4a2d-4ce4-ac17-0dda6eb4b82a",
+        "intake": "September 2027"
+      },
+      "verificationStatus": "NEEDS_REVIEW",
+      "conflictId": null,
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [
+        "229570ef-d5d7-4932-bc17-8bcfab0775de",
+        "3ce0c8c4-8eb6-42ff-b057-559289bb70a4"
+      ],
+      "createdAt": "2026-09-21T08:36:22.321Z",
+      "updatedAt": "2026-09-21T08:36:22.321Z"
+    },
+    {
+      "id": "0a06a21a-4753-4360-932a-a81a0f2e64d1",
+      "entityType": "PROGRAM",
+      "entityId": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "fieldKey": "required_high_school_courses",
+      "value": "Mathematics, Physics, and Chemistry at the BC Grade 12 level or equivalent; selection also weighs standing in English 12.",
+      "academicYear": "2026/27 Calendar (most current published UBC calendar as of 2026-09-21 — NOT explicitly confirmed for 2027 Entry; see Source 'Bachelor of Applied Science: Admission' reasoning)",
+      "applicability": {
+        "applicantType": [
+          "Domestic"
+        ],
+        "province": "British Columbia/Yukon (or equivalent curriculum)",
+        "campus": "Vancouver",
+        "admissionCategoryId": "80f1af32-4a2d-4ce4-ac17-0dda6eb4b82a",
+        "intake": null
+      },
+      "verificationStatus": "NEEDS_REVIEW",
+      "conflictId": null,
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [
+        "23b31e95-3fe2-4a6d-a4e3-c4c93748dc99",
+        "e72f2a73-abc7-4769-868a-df22282978ad"
+      ],
+      "createdAt": "2026-09-21T08:36:22.323Z",
+      "updatedAt": "2026-09-21T08:36:22.323Z"
+    },
+    {
+      "id": "f0bf27f5-1ef1-4833-95cf-2bec11e68f53",
+      "entityType": "PROGRAM",
+      "entityId": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "fieldKey": "supplementary_application",
+      "value": "Required for applicants entering directly from secondary school: a personal profile with short essay responses and two references. Transfer applicants are typically not required to complete this step.",
+      "academicYear": "2027 Entry (Winter Session Sept 2027 – Apr 2028)",
+      "applicability": {
+        "applicantType": [
+          "Domestic",
+          "International"
+        ],
+        "province": null,
+        "campus": null,
+        "admissionCategoryId": "80f1af32-4a2d-4ce4-ac17-0dda6eb4b82a",
+        "intake": null
+      },
+      "verificationStatus": "NEEDS_REVIEW",
+      "conflictId": null,
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [
+        "a3ec16eb-94c9-40ca-965f-385cef04bdd1"
+      ],
+      "createdAt": "2026-09-21T08:36:22.326Z",
+      "updatedAt": "2026-09-21T08:36:22.326Z"
+    },
+    {
+      "id": "e6f6fa6b-468f-422d-a0b6-5826841bfa0a",
+      "entityType": "PROGRAM",
+      "entityId": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "fieldKey": "grade_requirement_transfer_applicants",
+      "value": "Overall average of at least 65% (including any failed courses), and at least 70% in each of chemistry, mathematics, and physics.",
+      "academicYear": "2026/27 Calendar (see Source 'Bachelor of Applied Science: Admission' reasoning re: applicability to 2027 Entry)",
+      "applicability": {
+        "applicantType": [
+          "Transfer"
+        ],
+        "province": null,
+        "campus": null,
+        "admissionCategoryId": "80f1af32-4a2d-4ce4-ac17-0dda6eb4b82a",
+        "intake": null
+      },
+      "verificationStatus": "NEEDS_REVIEW",
+      "conflictId": null,
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [
+        "709192ae-97f1-4908-9ca6-7c85551d326d"
+      ],
+      "createdAt": "2026-09-21T08:36:22.328Z",
+      "updatedAt": "2026-09-21T08:36:22.328Z"
+    },
+    {
+      "id": "513f4dcb-00d0-45cd-b466-cea06d919593",
+      "entityType": "PROGRAM",
+      "entityId": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "fieldKey": "grade_requirement_direct_entry",
+      "value": "NOT VERIFIED: no fixed minimum grade/percentage is published for applicants entering Engineering directly from secondary school. UBC describes this admission as 'competitive', based on standing in the required Grade 12 courses, with no stated cutoff. (A numeric minimum — 65% overall, 70% per subject — is stated explicitly, but only for post-secondary transfer applicants; see the separate transfer-applicant Fact.)",
+      "academicYear": "2026/27 Calendar",
+      "applicability": {
+        "applicantType": [
+          "Domestic",
+          "International"
+        ],
+        "province": null,
+        "campus": null,
+        "admissionCategoryId": "80f1af32-4a2d-4ce4-ac17-0dda6eb4b82a",
+        "intake": null
+      },
+      "verificationStatus": "NOT_VERIFIED",
+      "conflictId": null,
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [],
+      "createdAt": "2026-09-21T08:36:22.329Z",
+      "updatedAt": "2026-09-21T08:36:22.329Z"
+    },
+    {
+      "id": "25d01caf-0765-4613-a1cd-767cb986bf22",
+      "entityType": "PROGRAM",
+      "entityId": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "fieldKey": "simulated_test_case_prerequisite",
+      "value": "SIMULATED — NOT REAL UBC REQUIREMENT: Chemistry 12 specifically required.",
+      "academicYear": "SIMULATED TEST CASE",
+      "applicability": {
+        "applicantType": "UNSPECIFIED — confirm applicability",
+        "province": null,
+        "campus": null,
+        "admissionCategoryId": null,
+        "intake": null
+      },
+      "verificationStatus": "CONFLICTING_SOURCES",
+      "conflictId": "00b0ada0-ad97-4fe7-a452-d0247a4891c3",
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [
+        "410cfe09-d9cb-477d-b4ff-bfc5ccd98d64"
+      ],
+      "createdAt": "2026-09-21T08:36:22.335Z",
+      "updatedAt": "2026-09-21T08:36:22.339Z"
+    },
+    {
+      "id": "7ec8edc7-e2cd-4967-a7a1-e955a60d0c1f",
+      "entityType": "PROGRAM",
+      "entityId": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "fieldKey": "simulated_test_case_prerequisite",
+      "value": "SIMULATED — NOT REAL UBC REQUIREMENT: Chemistry 12 or equivalent lab science accepted.",
+      "academicYear": "SIMULATED TEST CASE",
+      "applicability": {
+        "applicantType": "UNSPECIFIED — confirm applicability",
+        "province": null,
+        "campus": null,
+        "admissionCategoryId": null,
+        "intake": null
+      },
+      "verificationStatus": "CONFLICTING_SOURCES",
+      "conflictId": "00b0ada0-ad97-4fe7-a452-d0247a4891c3",
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [
+        "fea9c789-446c-45b0-8154-0f23b5affa42"
+      ],
+      "createdAt": "2026-09-21T08:36:22.336Z",
+      "updatedAt": "2026-09-21T08:36:22.340Z"
+    },
+    {
+      "id": "c20e4f5c-2bd2-40b0-a466-11a5c2f9f9ff",
+      "entityType": "PROGRAM",
+      "entityId": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "fieldKey": "simulated_test_case_history_demo",
+      "value": "SIMULATED — TEST VALUE for the 2026 cycle.",
+      "academicYear": "SIMULATED 2026 TEST CASE",
+      "applicability": {
+        "applicantType": "UNSPECIFIED — confirm applicability",
+        "province": null,
+        "campus": null,
+        "admissionCategoryId": null,
+        "intake": null
+      },
+      "verificationStatus": "NEEDS_REVIEW",
+      "conflictId": null,
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": "8464813d-d1b1-4f0b-8626-d9631665dffa",
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [
+        "88192466-5b1d-419f-9f1f-ed0cfe583e32"
+      ],
+      "createdAt": "2026-09-21T08:36:22.343Z",
+      "updatedAt": "2026-09-21T08:36:22.347Z"
+    },
+    {
+      "id": "8464813d-d1b1-4f0b-8626-d9631665dffa",
+      "entityType": "PROGRAM",
+      "entityId": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "fieldKey": "simulated_test_case_history_demo",
+      "value": "SIMULATED — TEST VALUE for the 2027 cycle (supersedes the 2026 value).",
+      "academicYear": "SIMULATED 2027 TEST CASE",
+      "applicability": {
+        "applicantType": "UNSPECIFIED — confirm applicability",
+        "province": null,
+        "campus": null,
+        "admissionCategoryId": null,
+        "intake": null
+      },
+      "verificationStatus": "NEEDS_REVIEW",
+      "conflictId": null,
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [
+        "9ed718d4-da33-479b-b32b-6f67a1ac2d8e"
+      ],
+      "createdAt": "2026-09-21T08:36:22.345Z",
+      "updatedAt": "2026-09-21T08:36:22.345Z"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "prompt": "UBC Undergraduate Engineering Admission — 2027",
+      "researchDate": "2026-09-21",
+      "sourcesFound": 7,
+      "evidenceExtracted": 11,
+      "factsExtracted": 10,
+      "gaps": [
+        "No fixed minimum grade/percentage is published for Engineering applicants entering directly from secondary school (admission is described only as 'competitive'). A numeric minimum exists only for post-secondary transfer applicants.",
+        "engineering.ubc.ca/admissions/undergraduate/how-to-apply does not expose its own last-modified date, so its currency rests on content cross-check against you.ubc.ca's confirmed-current dates page, not on this page's own metadata.",
+        "The English Language Proficiency Tests calendar page does not state which Academic Calendar edition (2025/26 vs 2026/27) it belongs to.",
+        "No UBC page yet confirms Engineering's admission requirements specifically for the 2027/28 academic-calendar edition — UBC has not published a 2027/28 calendar edition as of retrieval, only 2026/27.",
+        "Portfolio and interview requirements were not investigated in this session (Engineering direct-entry does not appear to require either, based on the pages read, but this was not exhaustively confirmed against every program variant)."
+      ],
+      "conflictsDetected": 1,
+      "reviewStatus": "PENDING_REVIEW",
+      "createdAt": "2026-09-21T08:36:22.307Z"
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "00b0ada0-ad97-4fe7-a452-d0247a4891c3",
+      "affectedFactIds": [
+        "25d01caf-0765-4613-a1cd-767cb986bf22",
+        "7ec8edc7-e2cd-4967-a7a1-e955a60d0c1f"
+      ],
+      "sourceAId": "c88b4ebc-fed3-41d2-9d7b-080eb091a0e6",
+      "sourceBId": "1dec3ce6-f26d-4e24-98b8-c8aa40508db8",
+      "conflictDescription": "SIMULATED — NOT REAL UBC CONFLICT. This is a test fixture demonstrating two disagreeing sources about a prerequisite. No genuine conflict was found among the real UBC sources researched in this session; this exists only to exercise the Conflict entity and its resolution workflow end-to-end.",
+      "detectedDate": "2026-09-21",
+      "resolutionStatus": "OPEN",
+      "resolutionNotes": null,
+      "resolvedBy": null,
+      "resolvedDate": null,
+      "isSimulated": true,
+      "simulatedLabel": "SIMULATED — NOT REAL UBC CONFLICT"
+    }
+  ]
+};
+</script>
+<script>
+(function () {
+  "use strict";
+
+  // ---------------------------------------------------------------------
+  // Store: starts from the real seed data captured by the Vertical Slice
+  // codebase's own SQLite database (src/seed/seed-ubc-engineering.ts),
+  // then is overwritten by live reads from the `db` capability when
+  // available, so every viewer sees the current, shared state.
+  // ---------------------------------------------------------------------
+  const store = {
+    universities: {}, admissionCategories: {}, programs: {},
+    sources: {}, evidence: {}, facts: {}, conflicts: {}, sessions: {},
+  };
+  function loadSeed(data) {
+    for (const u of data.universities) store.universities[u.id] = u;
+    for (const c of data.admissionCategories) store.admissionCategories[c.id] = c;
+    for (const p of data.programs) store.programs[p.id] = p;
+    for (const s of data.sources) store.sources[s.id] = s;
+    for (const e of data.evidence) store.evidence[e.id] = e;
+    for (const f of data.facts) store.facts[f.id] = f;
+    for (const c of data.conflicts) store.conflicts[c.id] = c;
+    for (const s of data.sessions) store.sessions[s.id] = s;
+  }
+  loadSeed(SEED_DATA);
+
+  let db = null;
+  let userCap = null;
+  let viewerName = null;
+  let canWrite = false;
+
+  const COLLECTIONS = ["universities", "admissionCategories", "programs", "sources", "evidence", "facts", "conflicts", "sessions"];
+
+  async function initCapabilities() {
+    try {
+      if (window.claude && typeof window.claude.use === "function") {
+        db = await window.claude.use("db");
+        userCap = await window.claude.use("user");
+      }
+    } catch (e) { /* no-op: fall back to seed-only, read-only mode */ }
+
+    if (userCap) {
+      try {
+        canWrite = (await userCap.can("data.write")) !== false;
+        const me = userCap.me ? await userCap.me() : null;
+        viewerName = me && me.name ? me.name : null;
+      } catch (e) { /* leave defaults */ }
+    }
+
+    if (db) {
+      try {
+        await Promise.all(
+          COLLECTIONS.map(async (col) => {
+            const snap = await db.collection(col).get();
+            if (snap.size === 0) return; // nothing written yet for this collection — keep seed
+            const fresh = {};
+            for (const doc of snap.docs) fresh[doc.id] = doc.data();
+            store[col] = fresh;
+          })
+        );
+      } catch (e) { /* keep seed data if the live read fails */ }
+    }
+  }
+
+  // ---------------------------------------------------------------------
+  // Tiny helpers
+  // ---------------------------------------------------------------------
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const badge = (status) => `<span class="badge ${esc(status)}">${esc(String(status).replace(/_/g, " "))}</span>`;
+  const nowIso = () => new Date().toISOString();
+  const RESERVED_NAMES = ["ai", "system", "claude", "bot"];
+
+  function factsForEntity(type, id) {
+    return Object.values(store.facts).filter((f) => f.entityType === type && f.entityId === id);
+  }
+  function evidenceForSource(sourceId) {
+    return Object.values(store.evidence).filter((e) => e.sourceId === sourceId);
+  }
+  function sourcesForFacts(facts) {
+    const ids = new Set();
+    for (const f of facts) for (const eid of f.evidenceIds || []) {
+      const ev = store.evidence[eid];
+      if (ev) ids.add(ev.sourceId);
+    }
+    return Array.from(ids).map((id) => store.sources[id]).filter(Boolean);
+  }
+  function factHistory(fact) {
+    // Walk to the oldest ancestor, then forward.
+    let head = fact;
+    let guard = 0;
+    while (guard++ < 50) {
+      const predecessor = Object.values(store.facts).find((f) => f.supersededByFactId === head.id);
+      if (!predecessor) break;
+      head = predecessor;
+    }
+    const chain = [];
+    let cur = head;
+    guard = 0;
+    while (cur && guard++ < 50) {
+      chain.push(cur);
+      cur = cur.supersededByFactId ? store.facts[cur.supersededByFactId] : null;
+    }
+    return chain;
+  }
+
+  function applicabilityLine(a) {
+    if (!a) return "—";
+    const type = Array.isArray(a.applicantType) ? a.applicantType.join(", ") : a.applicantType;
+    const bits = [
+      `Applicant type: ${esc(type)}`,
+      `Province: ${esc(a.province || "—")}`,
+      `Campus: ${esc(a.campus || "—")}`,
+      `Intake: ${esc(a.intake || "—")}`,
+    ];
+    return bits.join("<br>");
+  }
+
+  // ---------------------------------------------------------------------
+  // Router
+  // ---------------------------------------------------------------------
+  function currentRoute() {
+    const hash = location.hash.replace(/^#\/?/, "");
+    const [type, id] = hash.split("/");
+    return { type: type || "home", id };
+  }
+
+  window.addEventListener("hashchange", render);
+
+  async function render() {
+    const app = document.getElementById("app");
+    const { type, id } = currentRoute();
+    try {
+      if (type === "home") app.innerHTML = viewHome();
+      else if (type === "university") app.innerHTML = viewUniversity(id);
+      else if (type === "admission-category") app.innerHTML = viewAdmissionCategory(id);
+      else if (type === "program") app.innerHTML = viewProgram(id);
+      else if (type === "source") app.innerHTML = viewSource(id);
+      else if (type === "fact") app.innerHTML = viewFact(id);
+      else if (type === "conflict") app.innerHTML = viewConflict(id);
+      else if (type === "session") app.innerHTML = viewSession(id);
+      else app.innerHTML = viewHome();
+    } catch (e) {
+      app.innerHTML = `<p class="msg err">Something went wrong rendering this page: ${esc(e.message)}</p><p><a href="#/">← Back home</a></p>`;
+    }
+    wireForms();
+  }
+
+  function crumbs(parts) {
+    return `<div class="crumbs">${parts
+      .map((p, i) => (i < parts.length - 1 ? `<a href="${p.href}">${esc(p.label)}</a><span class="sep">/</span>` : esc(p.label)))
+      .join("")}</div>`;
+  }
+
+  const capNote = () =>
+    db
+      ? ""
+      : `<div class="no-cap">This preview isn't connected to the shared database yet — showing the seeded research data read-only. Open the published page to review and verify.</div>`;
+
+  // ---------------------------------------------------------------------
+  // Views
+  // ---------------------------------------------------------------------
+  function viewHome() {
+    const universities = Object.values(store.universities);
+    const sessions = Object.values(store.sessions);
+    return `
+      ${capNote()}
+      <div class="eyebrow">Wango University Knowledge Base — Vertical Slice 1</div>
+      <h1>UBC Engineering Review</h1>
+      <p class="status-line">UBC × Undergraduate Engineering Admission × Engineering × 2027. Everything below traces back to a real, cited Source — nothing is pre-verified; that's your call.</p>
+
+      <h2>Universities</h2>
+      <div class="list">
+        ${universities
+          .map((u) => `<a class="row-link" href="#/university/${u.id}"><span class="row-title">${esc(u.name)}</span><span class="row-sub">${esc(u.province || "")}</span></a>`)
+          .join("")}
+      </div>
+
+      <h2>Research Sessions</h2>
+      <div class="list">
+        ${sessions
+          .map(
+            (s) =>
+              `<a class="row-link" href="#/session/${s.id}"><span class="row-title">${esc(s.prompt)}</span><span class="row-sub">${s.factsExtracted} facts · ${s.sourcesFound} sources · ${s.conflictsDetected} conflict(s)</span></a>`
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function viewUniversity(id) {
+    const u = store.universities[id];
+    if (!u) return `<p>Not found.</p>`;
+    const categories = Object.values(store.admissionCategories).filter((c) => c.universityId === id);
+    const facts = factsForEntity("UNIVERSITY", id);
+    return `
+      ${capNote()}
+      ${crumbs([{ href: "#/", label: "Home" }, { label: u.name }])}
+      <div class="eyebrow">University</div>
+      <h1>${esc(u.name)} ${u.shortName ? `(${esc(u.shortName)})` : ""}</h1>
+      <p class="status-line">${esc(u.province || "")} · <a href="${esc(u.officialAdmissionsUrl || "#")}">${esc(u.officialAdmissionsUrl || "")}</a></p>
+
+      <h2>Admission Categories</h2>
+      <div class="list">
+        ${categories.map((c) => `<a class="row-link" href="#/admission-category/${c.id}"><span class="row-title">${esc(c.name)}</span><span class="row-sub">${esc(c.categoryType)}</span></a>`).join("")}
+      </div>
+
+      ${facts.length ? `<h2>University-level Facts</h2>${factList(facts)}` : ""}
+    `;
+  }
+
+  function viewAdmissionCategory(id) {
+    const c = store.admissionCategories[id];
+    if (!c) return `<p>Not found.</p>`;
+    const u = store.universities[c.universityId];
+    const programs = Object.values(store.programs).filter((p) => p.primaryAdmissionCategoryId === id);
+    return `
+      ${capNote()}
+      ${crumbs([{ href: "#/", label: "Home" }, { href: `#/university/${u.id}`, label: u.name }, { label: c.name }])}
+      <div class="eyebrow">Admission Category · ${esc(c.categoryType)}</div>
+      <h1>${esc(c.name)}</h1>
+      <p class="status-line">${esc(c.description || "")}</p>
+      <h2>Programs</h2>
+      <div class="list">
+        ${programs.map((p) => `<a class="row-link" href="#/program/${p.id}"><span class="row-title">${esc(p.programName)}</span><span class="row-sub">${esc(p.degreeType || "")}</span></a>`).join("")}
+      </div>
+    `;
+  }
+
+  function factList(facts) {
+    return `<div class="list">
+      ${facts
+        .map(
+          (f) =>
+            `<a class="row-link" href="#/fact/${f.id}"><span><span class="row-title">${esc(f.fieldKey.replace(/_/g, " "))}</span><br><span class="row-sub">${esc(f.academicYear)}</span></span>${badge(f.verificationStatus)}</a>`
+        )
+        .join("")}
+    </div>`;
+  }
+
+  function viewProgram(id) {
+    const p = store.programs[id];
+    if (!p) return `<p>Not found.</p>`;
+    const c = store.admissionCategories[p.primaryAdmissionCategoryId];
+    const u = store.universities[p.universityId];
+    const facts = factsForEntity("PROGRAM", id).filter((f) => f.academicYear !== "SIMULATED TEST CASE" && !f.academicYear.startsWith("SIMULATED"));
+    const simFacts = factsForEntity("PROGRAM", id).filter((f) => f.academicYear === "SIMULATED TEST CASE" || f.academicYear.startsWith("SIMULATED"));
+    const sources = sourcesForFacts(factsForEntity("PROGRAM", id));
+    return `
+      ${capNote()}
+      ${crumbs([{ href: "#/", label: "Home" }, { href: `#/university/${u.id}`, label: u.name }, { href: `#/admission-category/${c.id}`, label: c.name }, { label: p.programName }])}
+      <div class="eyebrow">Program</div>
+      <h1>${esc(p.programName)} <span class="row-sub">(${esc(p.degreeType || "")})</span></h1>
+
+      <h2>Facts</h2>
+      ${factList(facts)}
+
+      <h2>Research Sources used for this Program</h2>
+      <div class="list">
+        ${sources.map((s) => `<a class="row-link" href="#/source/${s.id}"><span class="row-title">${esc(s.title)}</span>${badge(s.sourceStatus)}</a>`).join("")}
+      </div>
+
+      ${
+        simFacts.length
+          ? `<h2>Simulated test fixtures</h2>
+             <div class="simulated-flag">SIMULATED — NOT REAL UBC DATA. These exist only to demonstrate the Conflict and append-only History mechanics end to end.</div>
+             ${factList(simFacts)}`
+          : ""
+      }
+    `;
+  }
+
+  function viewSource(id) {
+    const s = store.sources[id];
+    if (!s) return `<p>Not found.</p>`;
+    const ev = evidenceForSource(id);
+    return `
+      ${capNote()}
+      ${crumbs([{ href: "#/", label: "Home" }, { label: "Source" }])}
+      ${s.notes && s.notes.startsWith("SIMULATED") ? `<div class="simulated-flag">${esc(s.notes)}</div>` : ""}
+      <div class="eyebrow">Source</div>
+      <h1>${esc(s.title)}</h1>
+      <dl class="kv">
+        <dt>URL</dt><dd><a href="${esc(s.url)}">${esc(s.url)}</a></dd>
+        <dt>Source type</dt><dd>${esc(s.sourceType)}</dd>
+        <dt>Publisher</dt><dd>${esc(s.publisher || "—")}</dd>
+        <dt>Academic year (as stated)</dt><dd>${esc(s.academicYear || "(not stated on the page)")}</dd>
+        <dt>Published / updated</dt><dd>${esc(s.publishedOrUpdatedDate || "(not captured)")}</dd>
+        <dt>Retrieved date</dt><dd>${esc(s.retrievedDate)}</dd>
+        <dt>Source status</dt><dd>${badge(s.sourceStatus)}</dd>
+      </dl>
+      <div class="reasoning"><strong>Why this status:</strong> ${esc(s.sourceStatusReasoning)}</div>
+
+      <h2>Evidence captured from this Source</h2>
+      <table class="evidence-table">
+        <thead><tr><th>Excerpt</th><th>Locator</th><th>Captured</th></tr></thead>
+        <tbody>
+          ${ev.map((e) => `<tr><td class="excerpt">“${esc(e.excerpt)}”</td><td class="locator">${esc(e.locator)}</td><td>${esc(e.capturedDate)}</td></tr>`).join("")}
+        </tbody>
+      </table>
+    `;
+  }
+
+  function viewSession(id) {
+    const s = store.sessions[id];
+    if (!s) return `<p>Not found.</p>`;
+    const sources = Object.values(store.sources).filter((src) => src.researchSessionId === id);
+    return `
+      ${capNote()}
+      ${crumbs([{ href: "#/", label: "Home" }, { label: "Research Session" }])}
+      <div class="eyebrow">Research Session</div>
+      <h1>${esc(s.prompt)}</h1>
+      <dl class="kv">
+        <dt>Research date</dt><dd>${esc(s.researchDate)}</dd>
+        <dt>Sources found</dt><dd>${s.sourcesFound}</dd>
+        <dt>Evidence extracted</dt><dd>${s.evidenceExtracted}</dd>
+        <dt>Facts extracted</dt><dd>${s.factsExtracted}</dd>
+        <dt>Conflicts detected</dt><dd>${s.conflictsDetected}</dd>
+        <dt>Review status</dt><dd>${esc(s.reviewStatus)}</dd>
+      </dl>
+      <h2>Gaps identified</h2>
+      <ul class="gap-list">${(s.gaps || []).map((g) => `<li>${esc(g)}</li>`).join("")}</ul>
+      <h2>Sources found</h2>
+      <div class="list">
+        ${sources.map((src) => `<a class="row-link" href="#/source/${src.id}"><span class="row-title">${esc(src.title)}</span>${badge(src.sourceStatus)}</a>`).join("")}
+      </div>
+    `;
+  }
+
+  function viewFact(id) {
+    const f = store.facts[id];
+    if (!f) return `<p>Not found.</p>`;
+    const isSim = f.academicYear.startsWith("SIMULATED");
+    const conflict = f.conflictId ? store.conflicts[f.conflictId] : null;
+    const history = factHistory(f);
+    const evidenceRows = (f.evidenceIds || [])
+      .map((eid) => {
+        const ev = store.evidence[eid];
+        if (!ev) return "";
+        const src = store.sources[ev.sourceId];
+        return `<tr><td class="excerpt">“${esc(ev.excerpt)}”</td><td class="locator">${esc(ev.locator)}</td><td><a href="#/source/${src.id}">${esc(src.title)}</a> ${badge(src.sourceStatus)}</td></tr>`;
+      })
+      .join("");
+
+    return `
+      ${capNote()}
+      ${crumbs([{ href: "#/", label: "Home" }, { label: "Fact" }])}
+      ${isSim ? `<div class="simulated-flag">SIMULATED — NOT REAL UBC REQUIREMENT. This Fact exists only to exercise the Conflict / History mechanics.</div>` : ""}
+      <div class="eyebrow">Fact</div>
+      <h1>${esc(f.fieldKey.replace(/_/g, " "))}</h1>
+
+      <dl class="kv">
+        <dt>Value</dt><dd>${esc(f.value)}</dd>
+        <dt>Academic Year</dt><dd>${esc(f.academicYear)}</dd>
+        <dt>Applicability</dt><dd>${applicabilityLine(f.applicability)}</dd>
+        <dt>Verification Status</dt><dd>${badge(f.verificationStatus)}</dd>
+        <dt>Extracted by</dt><dd>${esc(f.extractedBy)}</dd>
+        <dt>Confirmed by</dt><dd>${esc(f.confirmedBy || "— (not yet reviewed by a human)")}</dd>
+        <dt>Last verified date</dt><dd>${esc(f.lastVerifiedDate || "—")}</dd>
+      </dl>
+
+      ${
+        conflict
+          ? `<div class="${conflict.isSimulated ? "simulated-flag" : "msg warn"}">
+              ${conflict.isSimulated ? esc(conflict.simulatedLabel) + ". " : ""}This Fact is part of a Conflict: ${esc(conflict.conflictDescription)}
+              <br><a href="#/conflict/${conflict.id}">Review the Conflict →</a>
+            </div>`
+          : ""
+      }
+
+      <h2>Evidence backing this Fact</h2>
+      ${
+        (f.evidenceIds || []).length
+          ? `<table class="evidence-table"><thead><tr><th>Excerpt</th><th>Locator</th><th>Source</th></tr></thead><tbody>${evidenceRows}</tbody></table>`
+          : `<p><em>No Evidence — this Fact is NOT_VERIFIED by design (No Source, No Fact).</em></p>`
+      }
+
+      <h2>History (append-only)</h2>
+      <table class="evidence-table">
+        <thead><tr><th>Academic Year</th><th>Value</th><th>Status</th></tr></thead>
+        <tbody>
+          ${history
+            .map(
+              (h) =>
+                `<tr class="history-row ${h.id === f.id ? "current" : ""}"><td>${esc(h.academicYear)}</td><td>${h.id === f.id ? esc(h.value) : `<a href="#/fact/${h.id}">${esc(h.value)}</a>`}</td><td>${badge(h.verificationStatus)}</td></tr>`
+            )
+            .join("")}
+        </tbody>
+      </table>
+
+      ${!conflict ? reviewForm(f) : conflict.resolutionStatus === "OPEN" || conflict.resolutionStatus === "HUMAN_REVIEW" ? `<p>This Fact is part of an unresolved Conflict — review it from the <a href="#/conflict/${conflict.id}">Conflict page</a> so both sides are resolved together.</p>` : ""}
+    `;
+  }
+
+  function reviewForm(f) {
+    return `
+      <form class="review" data-fact-id="${f.id}" id="review-form">
+        <h3>Review this Fact</h3>
+        <p class="status-line" style="margin-top:0">Only a signed-in human reviewer can set VERIFIED — this runs the same checks as the codebase's <code>verifyFact()</code> (No Source → No Fact; a SUPERSEDED source blocks VERIFIED).</p>
+        ${
+          viewerName
+            ? `<p class="status-line">Reviewing as <strong>${esc(viewerName)}</strong>.</p>`
+            : `<div class="field"><label for="reviewerName">Your name</label><input type="text" id="reviewerName" placeholder="Wango" required></div>`
+        }
+        <div class="radio-row">
+          <label><input type="radio" name="status" value="VERIFIED" checked> VERIFY</label>
+          <label><input type="radio" name="status" value="NEEDS_REVIEW"> Keep NEEDS REVIEW</label>
+          <label><input type="radio" name="status" value="NOT_VERIFIED"> Mark NOT VERIFIED</label>
+        </div>
+        <button type="submit" ${db && canWrite === false ? "disabled" : ""}>Submit review</button>
+        <div class="form-msg"></div>
+      </form>
+    `;
+  }
+
+  function viewConflict(id) {
+    const c = store.conflicts[id];
+    if (!c) return `<p>Not found.</p>`;
+    const facts = c.affectedFactIds.map((fid) => store.facts[fid]).filter(Boolean);
+    const sourceA = store.sources[c.sourceAId];
+    const sourceB = store.sources[c.sourceBId];
+    const isOpen = c.resolutionStatus === "OPEN" || c.resolutionStatus === "HUMAN_REVIEW";
+    return `
+      ${capNote()}
+      ${crumbs([{ href: "#/", label: "Home" }, { label: "Conflict" }])}
+      ${c.isSimulated ? `<div class="simulated-flag">${esc(c.simulatedLabel)}. This is a test fixture, not a real disagreement among UBC sources.</div>` : ""}
+      <div class="eyebrow">Conflict</div>
+      <h1>${esc(c.conflictDescription)}</h1>
+      <dl class="kv">
+        <dt>Detected date</dt><dd>${esc(c.detectedDate)}</dd>
+        <dt>Resolution status</dt><dd>${esc(c.resolutionStatus)}</dd>
+        <dt>Source A</dt><dd><a href="#/source/${sourceA.id}">${esc(sourceA.title)}</a></dd>
+        <dt>Source B</dt><dd><a href="#/source/${sourceB.id}">${esc(sourceB.title)}</a></dd>
+        ${c.resolvedBy ? `<dt>Resolved by</dt><dd>${esc(c.resolvedBy)}</dd><dt>Resolution notes</dt><dd>${esc(c.resolutionNotes || "")}</dd>` : ""}
+      </dl>
+
+      <h2>Affected Facts</h2>
+      <div class="list">
+        ${facts.map((f) => `<a class="row-link" href="#/fact/${f.id}"><span class="row-title">${esc(f.value)}</span>${badge(f.verificationStatus)}</a>`).join("")}
+      </div>
+
+      ${
+        isOpen
+          ? `<form class="review" data-conflict-id="${c.id}" id="conflict-form">
+              <h3>Resolve this Conflict</h3>
+              <p class="status-line" style="margin-top:0">Only a signed-in human may resolve a Conflict. AI created this record but cannot pick a winner.</p>
+              ${
+                viewerName
+                  ? `<p class="status-line">Resolving as <strong>${esc(viewerName)}</strong>.</p>`
+                  : `<div class="field"><label for="resolverName">Your name</label><input type="text" id="resolverName" placeholder="Wango" required></div>`
+              }
+              <div class="field">
+                <label for="winningFactId">Winning Fact (used only if resolving to VERIFIED)</label>
+                <select id="winningFactId">
+                  ${facts.map((f) => `<option value="${f.id}">${esc(f.value)}</option>`).join("")}
+                </select>
+              </div>
+              <div class="radio-row" style="flex-direction:column; align-items:flex-start;">
+                <label><input type="radio" name="resolutionStatus" value="RESOLVED_VERIFIED" checked> The selected Fact is correct → VERIFIED (the other becomes NOT_VERIFIED)</label>
+                <label><input type="radio" name="resolutionStatus" value="RESOLVED_STILL_CONFLICTING"> Keep both on record — still conflicting</label>
+              </div>
+              <div class="field">
+                <label for="resolutionNotes">Notes</label>
+                <textarea id="resolutionNotes" rows="2" required></textarea>
+              </div>
+              <button type="submit" ${db && canWrite === false ? "disabled" : ""}>Submit resolution</button>
+              <div class="form-msg"></div>
+            </form>`
+          : ""
+      }
+    `;
+  }
+
+  // ---------------------------------------------------------------------
+  // Writes — mirrors the invariants enforced server-side in src/db/repo.ts
+  // ---------------------------------------------------------------------
+  function wireForms() {
+    const reviewForm = document.getElementById("review-form");
+    if (reviewForm) reviewForm.addEventListener("submit", onSubmitReview);
+    const conflictForm = document.getElementById("conflict-form");
+    if (conflictForm) conflictForm.addEventListener("submit", onSubmitConflict);
+  }
+
+  function formMsg(form, kind, text) {
+    const el = form.querySelector(".form-msg");
+    el.className = `form-msg msg ${kind}`;
+    el.textContent = text;
+  }
+
+  async function onSubmitReview(ev) {
+    ev.preventDefault();
+    const form = ev.target;
+    const factId = form.dataset.factId;
+    const fact = store.facts[factId];
+    const status = form.querySelector('input[name="status"]:checked').value;
+    const nameInput = form.querySelector("#reviewerName");
+    const reviewedBy = viewerName || (nameInput ? nameInput.value.trim() : "");
+
+    if (!reviewedBy) return formMsg(form, "err", "A reviewer name is required.");
+    if (RESERVED_NAMES.includes(reviewedBy.toLowerCase())) return formMsg(form, "err", `'${reviewedBy}' is a reserved non-human identity — a Fact can only be verified by a named human.`);
+
+    if (status === "VERIFIED") {
+      if (!fact.evidenceIds || fact.evidenceIds.length === 0) return formMsg(form, "err", "No Source, No Fact: cannot VERIFY a Fact with no Evidence.");
+      const sources = fact.evidenceIds.map((eid) => store.evidence[eid]).filter(Boolean).map((e) => store.sources[e.sourceId]).filter(Boolean);
+      for (const s of sources) {
+        if (s.sourceStatus === "SUPERSEDED") return formMsg(form, "err", `Cannot VERIFY: Source "${s.title}" is SUPERSEDED.`);
+      }
+      const warnSources = sources.filter((s) => s.sourceStatus === "POSSIBLY_OUTDATED" || s.sourceStatus === "UNKNOWN");
+      if (warnSources.length) {
+        const ok = confirm(`Source status warning: ${warnSources.map((s) => `"${s.title}" is ${s.sourceStatus}`).join("; ")}. Verifying means you are personally attesting its currency. Continue?`);
+        if (!ok) return;
+      }
+    }
+
+    if (!db) return formMsg(form, "err", "Not connected to the shared database in this preview — open the published page to submit a real review.");
+    if (canWrite === false) return formMsg(form, "err", "This view does not have write access.");
+
+    try {
+      await db.doc("facts/" + factId).update({
+        verificationStatus: status,
+        confirmedBy: reviewedBy,
+        lastVerifiedDate: status === "NEEDS_REVIEW" ? null : nowIso().slice(0, 10),
+      });
+      fact.verificationStatus = status;
+      fact.confirmedBy = reviewedBy;
+      fact.lastVerifiedDate = status === "NEEDS_REVIEW" ? null : nowIso().slice(0, 10);
+      formMsg(form, "ok", `Saved — this Fact is now ${status.replace(/_/g, " ")}.`);
+      setTimeout(render, 500);
+    } catch (e) {
+      formMsg(form, "err", "Could not save: " + e.message);
+    }
+  }
+
+  async function onSubmitConflict(ev) {
+    ev.preventDefault();
+    const form = ev.target;
+    const conflictId = form.dataset.conflictId;
+    const conflict = store.conflicts[conflictId];
+    const resolutionStatus = form.querySelector('input[name="resolutionStatus"]:checked').value;
+    const nameInput = form.querySelector("#resolverName");
+    const resolvedBy = viewerName || (nameInput ? nameInput.value.trim() : "");
+    const notes = form.querySelector("#resolutionNotes").value.trim();
+    const winningFactId = form.querySelector("#winningFactId").value;
+
+    if (!resolvedBy) return formMsg(form, "err", "A reviewer name is required.");
+    if (RESERVED_NAMES.includes(resolvedBy.toLowerCase())) return formMsg(form, "err", `'${resolvedBy}' is a reserved non-human identity — only a human may resolve a Conflict.`);
+    if (!notes) return formMsg(form, "err", "Resolution notes are required.");
+
+    if (!db) return formMsg(form, "err", "Not connected to the shared database in this preview — open the published page to submit a real resolution.");
+    if (canWrite === false) return formMsg(form, "err", "This view does not have write access.");
+
+    try {
+      if (resolutionStatus === "RESOLVED_VERIFIED") {
+        const winningFact = store.facts[winningFactId];
+        const sources = (winningFact.evidenceIds || []).map((eid) => store.evidence[eid]).filter(Boolean).map((e) => store.sources[e.sourceId]).filter(Boolean);
+        if (sources.some((s) => s.sourceStatus === "SUPERSEDED")) return formMsg(form, "err", "Cannot VERIFY: the winning Fact's source is SUPERSEDED.");
+        await db.doc("facts/" + winningFactId).update({ verificationStatus: "VERIFIED", confirmedBy: resolvedBy, lastVerifiedDate: nowIso().slice(0, 10) });
+        winningFact.verificationStatus = "VERIFIED";
+        winningFact.confirmedBy = resolvedBy;
+        winningFact.lastVerifiedDate = nowIso().slice(0, 10);
+        for (const fid of conflict.affectedFactIds) {
+          if (fid !== winningFactId) {
+            await db.doc("facts/" + fid).update({ verificationStatus: "NOT_VERIFIED" });
+            store.facts[fid].verificationStatus = "NOT_VERIFIED";
+          }
+        }
+      }
+      await db.doc("conflicts/" + conflictId).update({
+        resolutionStatus,
+        resolutionNotes: notes,
+        resolvedBy,
+        resolvedDate: nowIso().slice(0, 10),
+      });
+      conflict.resolutionStatus = resolutionStatus;
+      conflict.resolutionNotes = notes;
+      conflict.resolvedBy = resolvedBy;
+      formMsg(form, "ok", "Conflict resolution saved.");
+      setTimeout(render, 500);
+    } catch (e) {
+      formMsg(form, "err", "Could not save: " + e.message);
+    }
+  }
+
+  // ---------------------------------------------------------------------
+  // Boot
+  // ---------------------------------------------------------------------
+  (async function boot() {
+    await initCapabilities();
+    render();
+  })();
+})();
+</script>
