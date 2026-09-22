@@ -1,0 +1,542 @@
+{
+  "universities": [
+    {
+      "id": "4fbf2422-2557-40ec-a998-bd02ff355fc2",
+      "name": "University of British Columbia",
+      "shortName": "UBC",
+      "province": "British Columbia",
+      "officialAdmissionsUrl": "https://you.ubc.ca/"
+    }
+  ],
+  "admissionCategories": [
+    {
+      "id": "80f1af32-4a2d-4ce4-ac17-0dda6eb4b82a",
+      "universityId": "4fbf2422-2557-40ec-a998-bd02ff355fc2",
+      "name": "Direct Entry — Engineering (Bachelor of Applied Science)",
+      "categoryType": "Direct-entry-program",
+      "description": "The path a Grade 12 (or equivalent) applicant applies through to enter UBC's Bachelor of Applied Science (Engineering) directly from secondary school, as opposed to transferring in from another faculty or institution."
+    }
+  ],
+  "programs": [
+    {
+      "id": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "universityId": "4fbf2422-2557-40ec-a998-bd02ff355fc2",
+      "primaryAdmissionCategoryId": "80f1af32-4a2d-4ce4-ac17-0dda6eb4b82a",
+      "programName": "Engineering",
+      "degreeType": "Bachelor of Applied Science (BASc)"
+    }
+  ],
+  "sources": [
+    {
+      "id": "04a520dd-b600-4968-ab03-db9b4a9b405e",
+      "title": "UBC Undergraduate Admissions — Dates and Deadlines",
+      "url": "https://you.ubc.ca/applying-ubc/dates-deadlines/",
+      "sourceType": "UNIVERSITY_OFFICIAL",
+      "publisher": "University of British Columbia — Undergraduate Admissions",
+      "academicYear": "2027 Entry (Winter Session September 2027 – April 2028)",
+      "publishedOrUpdatedDate": "2026-09-10",
+      "retrievedDate": "2026-09-21",
+      "sourceStatus": "CURRENT",
+      "sourceStatusReasoning": "The page's own dates table is explicitly labeled 'Winter Session (September 2027 to April 2028)' — the exact cycle this research targets, not inferred by us. Page metadata shows last-modified 2026-09-10T21:03:23Z, 11 days before retrieval. Marked CURRENT because the content is both self-labeled with the target academic year AND recently modified — not merely because the domain is ubc.ca.",
+      "notes": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e"
+    },
+    {
+      "id": "d78223cd-6e01-42a7-93fa-f2dc7becaa32",
+      "title": "UBC Engineering — How to Apply (Undergraduate)",
+      "url": "https://engineering.ubc.ca/admissions/undergraduate/how-to-apply",
+      "sourceType": "UNIVERSITY_OFFICIAL",
+      "publisher": "UBC Faculty of Applied Science — Engineering",
+      "academicYear": null,
+      "publishedOrUpdatedDate": null,
+      "retrievedDate": "2026-09-21",
+      "sourceStatus": "UNKNOWN",
+      "sourceStatusReasoning": "No explicit academic-year label or last-modified metadata was captured for this specific page during retrieval. Its described application steps and personal-profile requirement are consistent with the Sept-2027 cycle confirmed on the Dates & Deadlines source, but consistency with another source is not the same as a confirmed update date on this page itself. Marked UNKNOWN rather than CURRENT — being on engineering.ubc.ca does not earn it CURRENT by default.",
+      "notes": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e"
+    },
+    {
+      "id": "c71690b4-78f2-4328-9f07-3adf4d167ec1",
+      "title": "UBC Academic Calendar — Bachelor of Applied Science: Admission (2026/27 Calendar)",
+      "url": "https://vancouver.calendar.ubc.ca/faculties-colleges-and-schools/faculty-applied-science/bachelor-applied-science/admission",
+      "sourceType": "UNIVERSITY_OFFICIAL",
+      "publisher": "University of British Columbia — Vancouver Academic Calendar",
+      "academicYear": "2026/27 Calendar",
+      "publishedOrUpdatedDate": null,
+      "retrievedDate": "2026-09-21",
+      "sourceStatus": "POSSIBLY_OUTDATED",
+      "sourceStatusReasoning": "Confirmed via a separate search of vancouver.calendar.ubc.ca that this is the most recently published UBC Vancouver Academic Calendar edition as of retrieval — no 2027/28 edition exists yet. But the page is explicitly labeled '2026/27 Calendar', one cycle behind the September-2027-entry cohort this research targets. UBC has not confirmed whether Engineering's admission requirements for 2027/28 will be identical. Marked POSSIBLY_OUTDATED relative to THIS research's target year — not because the page is stale in absolute terms (it is UBC's current live calendar), but because 'the current calendar' and 'confirmed for the cycle being researched' are two different claims, and this project must not conflate them.",
+      "notes": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e"
+    },
+    {
+      "id": "204f5e58-951c-4c85-8644-990ffbd46a19",
+      "title": "UBC Academic Calendar — English Language Proficiency Tests",
+      "url": "https://vancouver.calendar.ubc.ca/admissions/english-language-admission-standard/english-language-proficiency-tests",
+      "sourceType": "UNIVERSITY_OFFICIAL",
+      "publisher": "University of British Columbia — Vancouver Academic Calendar",
+      "academicYear": null,
+      "publishedOrUpdatedDate": null,
+      "retrievedDate": "2026-09-21",
+      "sourceStatus": "UNKNOWN",
+      "sourceStatusReasoning": "The page does not state which Academic Calendar edition it belongs to, and a cross-reference search did not conclusively confirm 2025/26 vs 2026/27. Marked UNKNOWN rather than assumed CURRENT, per the explicit instruction not to default to CURRENT just because the domain is ubc.ca.",
+      "notes": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e"
+    },
+    {
+      "id": "c88b4ebc-fed3-41d2-9d7b-080eb091a0e6",
+      "title": "SIMULATED SOURCE A — NOT REAL UBC PAGE (test fixture for Conflict handling)",
+      "url": "https://example-simulated.invalid/source-a",
+      "sourceType": "UNIVERSITY_OFFICIAL",
+      "publisher": "SIMULATED — test fixture, not a real publisher",
+      "academicYear": null,
+      "publishedOrUpdatedDate": null,
+      "retrievedDate": "2026-09-21",
+      "sourceStatus": "CURRENT",
+      "sourceStatusReasoning": "SIMULATED fixture — not a real retrieval; status is a placeholder for testing the Conflict pipeline only.",
+      "notes": "SIMULATED — NOT REAL UBC SOURCE",
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e"
+    },
+    {
+      "id": "1dec3ce6-f26d-4e24-98b8-c8aa40508db8",
+      "title": "SIMULATED SOURCE B — NOT REAL UBC PAGE (test fixture for Conflict handling)",
+      "url": "https://example-simulated.invalid/source-b",
+      "sourceType": "UNIVERSITY_OFFICIAL",
+      "publisher": "SIMULATED — test fixture, not a real publisher",
+      "academicYear": null,
+      "publishedOrUpdatedDate": null,
+      "retrievedDate": "2026-09-21",
+      "sourceStatus": "CURRENT",
+      "sourceStatusReasoning": "SIMULATED fixture — not a real retrieval; status is a placeholder for testing the Conflict pipeline only.",
+      "notes": "SIMULATED — NOT REAL UBC SOURCE",
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e"
+    },
+    {
+      "id": "a85f45f6-e660-4d37-9a55-1d07ee5111ab",
+      "title": "SIMULATED SOURCE C — NOT REAL UBC PAGE (test fixture for append-only history)",
+      "url": "https://example-simulated.invalid/source-c",
+      "sourceType": "UNIVERSITY_OFFICIAL",
+      "publisher": "SIMULATED — test fixture, not a real publisher",
+      "academicYear": null,
+      "publishedOrUpdatedDate": null,
+      "retrievedDate": "2026-09-21",
+      "sourceStatus": "CURRENT",
+      "sourceStatusReasoning": "SIMULATED fixture — not a real retrieval; status is a placeholder for testing the append-only history mechanic only.",
+      "notes": "SIMULATED — NOT REAL UBC SOURCE",
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "229570ef-d5d7-4932-bc17-8bcfab0775de",
+      "sourceId": "04a520dd-b600-4968-ab03-db9b4a9b405e",
+      "excerpt": "Online application opens for Winter Session (September 2027 to April 2028) and Summer Session (May to August 2027).",
+      "locator": "you.ubc.ca/applying-ubc/dates-deadlines/ — dates table, 'Preparation' row, first entry",
+      "capturedDate": "2026-09-21",
+      "notes": null
+    },
+    {
+      "id": "3ce0c8c4-8eb6-42ff-b057-559289bb70a4",
+      "sourceId": "04a520dd-b600-4968-ab03-db9b4a9b405e",
+      "excerpt": "January 15, 2027 (11:59 p.m. PST) — Application deadline",
+      "locator": "you.ubc.ca/applying-ubc/dates-deadlines/ — dates table, 'Application deadline' row",
+      "capturedDate": "2026-09-21",
+      "notes": null
+    },
+    {
+      "id": "a3ec16eb-94c9-40ca-965f-385cef04bdd1",
+      "sourceId": "d78223cd-6e01-42a7-93fa-f2dc7becaa32",
+      "excerpt": "High school students will submit a personal profile, which requires short essay responses and share the names of two references.",
+      "locator": "engineering.ubc.ca/admissions/undergraduate/how-to-apply — application steps section, personal-profile paragraph",
+      "capturedDate": "2026-09-21",
+      "notes": null
+    },
+    {
+      "id": "23b31e95-3fe2-4a6d-a4e3-c4c93748dc99",
+      "sourceId": "c71690b4-78f2-4328-9f07-3adf4d167ec1",
+      "excerpt": "applicants must have completed mathematics, physics, and chemistry at the BC Grade 12-level, or the equivalent.",
+      "locator": "vancouver.calendar.ubc.ca/faculties-colleges-and-schools/faculty-applied-science/bachelor-applied-science/admission — Admission section, BC/Yukon Grade 12 curriculum paragraph",
+      "capturedDate": "2026-09-21",
+      "notes": null
+    },
+    {
+      "id": "e72f2a73-abc7-4769-868a-df22282978ad",
+      "sourceId": "c71690b4-78f2-4328-9f07-3adf4d167ec1",
+      "excerpt": "Students will be selected on the basis of their standing in Grade 12 courses in mathematics, chemistry, physics, and English.",
+      "locator": "vancouver.calendar.ubc.ca/faculties-colleges-and-schools/faculty-applied-science/bachelor-applied-science/admission — Admission section, selection-criteria paragraph immediately following the course requirement",
+      "capturedDate": "2026-09-21",
+      "notes": null
+    },
+    {
+      "id": "709192ae-97f1-4908-9ca6-7c85551d326d",
+      "sourceId": "c71690b4-78f2-4328-9f07-3adf4d167ec1",
+      "excerpt": "An overall average of at least 65%, including any failed courses, is required. ... Applicants must achieve an average of at least 70% in each of these subject areas [chemistry, mathematics, physics].",
+      "locator": "vancouver.calendar.ubc.ca/faculties-colleges-and-schools/faculty-applied-science/bachelor-applied-science/admission — Admission section, Post-Secondary Transfer Requirements paragraph",
+      "capturedDate": "2026-09-21",
+      "notes": null
+    },
+    {
+      "id": "1b739923-c33b-4118-93e6-9dd5830dc585",
+      "sourceId": "204f5e58-951c-4c85-8644-990ffbd46a19",
+      "excerpt": "IELTS (Academic): 6.5 with no part less than 6.0",
+      "locator": "vancouver.calendar.ubc.ca/admissions/english-language-admission-standard/english-language-proficiency-tests — proficiency test score table, IELTS row",
+      "capturedDate": "2026-09-21",
+      "notes": null
+    },
+    {
+      "id": "410cfe09-d9cb-477d-b4ff-bfc5ccd98d64",
+      "sourceId": "c88b4ebc-fed3-41d2-9d7b-080eb091a0e6",
+      "excerpt": "SIMULATED: 'Chemistry 12 is specifically required; general science credit is not accepted.'",
+      "locator": "SIMULATED locator — test fixture, no real page exists",
+      "capturedDate": "2026-09-21",
+      "notes": "SIMULATED — NOT REAL UBC EVIDENCE"
+    },
+    {
+      "id": "fea9c789-446c-45b0-8154-0f23b5affa42",
+      "sourceId": "1dec3ce6-f26d-4e24-98b8-c8aa40508db8",
+      "excerpt": "SIMULATED: 'Chemistry 12 or an equivalent Grade 12 laboratory science course is accepted.'",
+      "locator": "SIMULATED locator — test fixture, no real page exists",
+      "capturedDate": "2026-09-21",
+      "notes": "SIMULATED — NOT REAL UBC EVIDENCE"
+    },
+    {
+      "id": "88192466-5b1d-419f-9f1f-ed0cfe583e32",
+      "sourceId": "a85f45f6-e660-4d37-9a55-1d07ee5111ab",
+      "excerpt": "SIMULATED: 'Test value for the 2026 cycle.'",
+      "locator": "SIMULATED locator — test fixture, no real page exists",
+      "capturedDate": "2026-09-21",
+      "notes": "SIMULATED — NOT REAL UBC EVIDENCE"
+    },
+    {
+      "id": "9ed718d4-da33-479b-b32b-6f67a1ac2d8e",
+      "sourceId": "a85f45f6-e660-4d37-9a55-1d07ee5111ab",
+      "excerpt": "SIMULATED: 'Test value for the 2027 cycle (supersedes the 2026 value).'",
+      "locator": "SIMULATED locator — test fixture, no real page exists",
+      "capturedDate": "2026-09-21",
+      "notes": "SIMULATED — NOT REAL UBC EVIDENCE"
+    }
+  ],
+  "facts": [
+    {
+      "id": "488cc522-6240-4386-ac91-e89c79a5f06b",
+      "entityType": "UNIVERSITY",
+      "entityId": "4fbf2422-2557-40ec-a998-bd02ff355fc2",
+      "fieldKey": "english_language_proficiency_requirement",
+      "value": "International applicants may demonstrate English competence via IELTS 6.5 overall (no band below 6.0), among other accepted pathways (TOEFL iBT 90, Duolingo English Test 125, PTE 65, CAEL 70, Cambridge English 180, or qualifying prior education/coursework — see evidence for the full list).",
+      "academicYear": "UBC Academic Calendar (edition not conclusively confirmed — see Source 'English Language Proficiency Tests' reasoning)",
+      "applicability": {
+        "applicantType": [
+          "International"
+        ],
+        "province": null,
+        "campus": null,
+        "admissionCategoryId": null,
+        "intake": null
+      },
+      "verificationStatus": "NEEDS_REVIEW",
+      "conflictId": null,
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [
+        "1b739923-c33b-4118-93e6-9dd5830dc585"
+      ],
+      "createdAt": "2026-09-21T08:36:22.330Z",
+      "updatedAt": "2026-09-21T08:36:22.330Z"
+    },
+    {
+      "id": "e7ebd204-6fa2-45ad-89ac-af4db43669d7",
+      "entityType": "PROGRAM",
+      "entityId": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "fieldKey": "application_deadline",
+      "value": "January 15, 2027, 11:59 p.m. Pacific Time — application deadline for Winter Session (September 2027 – April 2028) entry.",
+      "academicYear": "2027 Entry (Winter Session Sept 2027 – Apr 2028)",
+      "applicability": {
+        "applicantType": "UNSPECIFIED — confirm applicability",
+        "province": null,
+        "campus": "Vancouver",
+        "admissionCategoryId": "80f1af32-4a2d-4ce4-ac17-0dda6eb4b82a",
+        "intake": "September 2027"
+      },
+      "verificationStatus": "NEEDS_REVIEW",
+      "conflictId": null,
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [
+        "229570ef-d5d7-4932-bc17-8bcfab0775de",
+        "3ce0c8c4-8eb6-42ff-b057-559289bb70a4"
+      ],
+      "createdAt": "2026-09-21T08:36:22.321Z",
+      "updatedAt": "2026-09-21T08:36:22.321Z"
+    },
+    {
+      "id": "0a06a21a-4753-4360-932a-a81a0f2e64d1",
+      "entityType": "PROGRAM",
+      "entityId": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "fieldKey": "required_high_school_courses",
+      "value": "Mathematics, Physics, and Chemistry at the BC Grade 12 level or equivalent; selection also weighs standing in English 12.",
+      "academicYear": "2026/27 Calendar (most current published UBC calendar as of 2026-09-21 — NOT explicitly confirmed for 2027 Entry; see Source 'Bachelor of Applied Science: Admission' reasoning)",
+      "applicability": {
+        "applicantType": [
+          "Domestic"
+        ],
+        "province": "British Columbia/Yukon (or equivalent curriculum)",
+        "campus": "Vancouver",
+        "admissionCategoryId": "80f1af32-4a2d-4ce4-ac17-0dda6eb4b82a",
+        "intake": null
+      },
+      "verificationStatus": "NEEDS_REVIEW",
+      "conflictId": null,
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [
+        "23b31e95-3fe2-4a6d-a4e3-c4c93748dc99",
+        "e72f2a73-abc7-4769-868a-df22282978ad"
+      ],
+      "createdAt": "2026-09-21T08:36:22.323Z",
+      "updatedAt": "2026-09-21T08:36:22.323Z"
+    },
+    {
+      "id": "f0bf27f5-1ef1-4833-95cf-2bec11e68f53",
+      "entityType": "PROGRAM",
+      "entityId": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "fieldKey": "supplementary_application",
+      "value": "Required for applicants entering directly from secondary school: a personal profile with short essay responses and two references. Transfer applicants are typically not required to complete this step.",
+      "academicYear": "2027 Entry (Winter Session Sept 2027 – Apr 2028)",
+      "applicability": {
+        "applicantType": [
+          "Domestic",
+          "International"
+        ],
+        "province": null,
+        "campus": null,
+        "admissionCategoryId": "80f1af32-4a2d-4ce4-ac17-0dda6eb4b82a",
+        "intake": null
+      },
+      "verificationStatus": "NEEDS_REVIEW",
+      "conflictId": null,
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [
+        "a3ec16eb-94c9-40ca-965f-385cef04bdd1"
+      ],
+      "createdAt": "2026-09-21T08:36:22.326Z",
+      "updatedAt": "2026-09-21T08:36:22.326Z"
+    },
+    {
+      "id": "e6f6fa6b-468f-422d-a0b6-5826841bfa0a",
+      "entityType": "PROGRAM",
+      "entityId": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "fieldKey": "grade_requirement_transfer_applicants",
+      "value": "Overall average of at least 65% (including any failed courses), and at least 70% in each of chemistry, mathematics, and physics.",
+      "academicYear": "2026/27 Calendar (see Source 'Bachelor of Applied Science: Admission' reasoning re: applicability to 2027 Entry)",
+      "applicability": {
+        "applicantType": [
+          "Transfer"
+        ],
+        "province": null,
+        "campus": null,
+        "admissionCategoryId": "80f1af32-4a2d-4ce4-ac17-0dda6eb4b82a",
+        "intake": null
+      },
+      "verificationStatus": "NEEDS_REVIEW",
+      "conflictId": null,
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [
+        "709192ae-97f1-4908-9ca6-7c85551d326d"
+      ],
+      "createdAt": "2026-09-21T08:36:22.328Z",
+      "updatedAt": "2026-09-21T08:36:22.328Z"
+    },
+    {
+      "id": "513f4dcb-00d0-45cd-b466-cea06d919593",
+      "entityType": "PROGRAM",
+      "entityId": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "fieldKey": "grade_requirement_direct_entry",
+      "value": "NOT VERIFIED: no fixed minimum grade/percentage is published for applicants entering Engineering directly from secondary school. UBC describes this admission as 'competitive', based on standing in the required Grade 12 courses, with no stated cutoff. (A numeric minimum — 65% overall, 70% per subject — is stated explicitly, but only for post-secondary transfer applicants; see the separate transfer-applicant Fact.)",
+      "academicYear": "2026/27 Calendar",
+      "applicability": {
+        "applicantType": [
+          "Domestic",
+          "International"
+        ],
+        "province": null,
+        "campus": null,
+        "admissionCategoryId": "80f1af32-4a2d-4ce4-ac17-0dda6eb4b82a",
+        "intake": null
+      },
+      "verificationStatus": "NOT_VERIFIED",
+      "conflictId": null,
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [],
+      "createdAt": "2026-09-21T08:36:22.329Z",
+      "updatedAt": "2026-09-21T08:36:22.329Z"
+    },
+    {
+      "id": "25d01caf-0765-4613-a1cd-767cb986bf22",
+      "entityType": "PROGRAM",
+      "entityId": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "fieldKey": "simulated_test_case_prerequisite",
+      "value": "SIMULATED — NOT REAL UBC REQUIREMENT: Chemistry 12 specifically required.",
+      "academicYear": "SIMULATED TEST CASE",
+      "applicability": {
+        "applicantType": "UNSPECIFIED — confirm applicability",
+        "province": null,
+        "campus": null,
+        "admissionCategoryId": null,
+        "intake": null
+      },
+      "verificationStatus": "CONFLICTING_SOURCES",
+      "conflictId": "00b0ada0-ad97-4fe7-a452-d0247a4891c3",
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [
+        "410cfe09-d9cb-477d-b4ff-bfc5ccd98d64"
+      ],
+      "createdAt": "2026-09-21T08:36:22.335Z",
+      "updatedAt": "2026-09-21T08:36:22.339Z"
+    },
+    {
+      "id": "7ec8edc7-e2cd-4967-a7a1-e955a60d0c1f",
+      "entityType": "PROGRAM",
+      "entityId": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "fieldKey": "simulated_test_case_prerequisite",
+      "value": "SIMULATED — NOT REAL UBC REQUIREMENT: Chemistry 12 or equivalent lab science accepted.",
+      "academicYear": "SIMULATED TEST CASE",
+      "applicability": {
+        "applicantType": "UNSPECIFIED — confirm applicability",
+        "province": null,
+        "campus": null,
+        "admissionCategoryId": null,
+        "intake": null
+      },
+      "verificationStatus": "CONFLICTING_SOURCES",
+      "conflictId": "00b0ada0-ad97-4fe7-a452-d0247a4891c3",
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [
+        "fea9c789-446c-45b0-8154-0f23b5affa42"
+      ],
+      "createdAt": "2026-09-21T08:36:22.336Z",
+      "updatedAt": "2026-09-21T08:36:22.340Z"
+    },
+    {
+      "id": "c20e4f5c-2bd2-40b0-a466-11a5c2f9f9ff",
+      "entityType": "PROGRAM",
+      "entityId": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "fieldKey": "simulated_test_case_history_demo",
+      "value": "SIMULATED — TEST VALUE for the 2026 cycle.",
+      "academicYear": "SIMULATED 2026 TEST CASE",
+      "applicability": {
+        "applicantType": "UNSPECIFIED — confirm applicability",
+        "province": null,
+        "campus": null,
+        "admissionCategoryId": null,
+        "intake": null
+      },
+      "verificationStatus": "NEEDS_REVIEW",
+      "conflictId": null,
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": "8464813d-d1b1-4f0b-8626-d9631665dffa",
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [
+        "88192466-5b1d-419f-9f1f-ed0cfe583e32"
+      ],
+      "createdAt": "2026-09-21T08:36:22.343Z",
+      "updatedAt": "2026-09-21T08:36:22.347Z"
+    },
+    {
+      "id": "8464813d-d1b1-4f0b-8626-d9631665dffa",
+      "entityType": "PROGRAM",
+      "entityId": "b15f0bc7-6503-4aba-8527-07f86dab6bbd",
+      "fieldKey": "simulated_test_case_history_demo",
+      "value": "SIMULATED — TEST VALUE for the 2027 cycle (supersedes the 2026 value).",
+      "academicYear": "SIMULATED 2027 TEST CASE",
+      "applicability": {
+        "applicantType": "UNSPECIFIED — confirm applicability",
+        "province": null,
+        "campus": null,
+        "admissionCategoryId": null,
+        "intake": null
+      },
+      "verificationStatus": "NEEDS_REVIEW",
+      "conflictId": null,
+      "lastVerifiedDate": null,
+      "extractedBy": "AI",
+      "confirmedBy": null,
+      "supersededByFactId": null,
+      "researchSessionId": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "evidenceIds": [
+        "9ed718d4-da33-479b-b32b-6f67a1ac2d8e"
+      ],
+      "createdAt": "2026-09-21T08:36:22.345Z",
+      "updatedAt": "2026-09-21T08:36:22.345Z"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "f22d2b78-848d-4847-8001-4303d7cb7c0e",
+      "prompt": "UBC Undergraduate Engineering Admission — 2027",
+      "researchDate": "2026-09-21",
+      "sourcesFound": 7,
+      "evidenceExtracted": 11,
+      "factsExtracted": 10,
+      "gaps": [
+        "No fixed minimum grade/percentage is published for Engineering applicants entering directly from secondary school (admission is described only as 'competitive'). A numeric minimum exists only for post-secondary transfer applicants.",
+        "engineering.ubc.ca/admissions/undergraduate/how-to-apply does not expose its own last-modified date, so its currency rests on content cross-check against you.ubc.ca's confirmed-current dates page, not on this page's own metadata.",
+        "The English Language Proficiency Tests calendar page does not state which Academic Calendar edition (2025/26 vs 2026/27) it belongs to.",
+        "No UBC page yet confirms Engineering's admission requirements specifically for the 2027/28 academic-calendar edition — UBC has not published a 2027/28 calendar edition as of retrieval, only 2026/27.",
+        "Portfolio and interview requirements were not investigated in this session (Engineering direct-entry does not appear to require either, based on the pages read, but this was not exhaustively confirmed against every program variant)."
+      ],
+      "conflictsDetected": 1,
+      "reviewStatus": "PENDING_REVIEW",
+      "createdAt": "2026-09-21T08:36:22.307Z"
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "00b0ada0-ad97-4fe7-a452-d0247a4891c3",
+      "affectedFactIds": [
+        "25d01caf-0765-4613-a1cd-767cb986bf22",
+        "7ec8edc7-e2cd-4967-a7a1-e955a60d0c1f"
+      ],
+      "sourceAId": "c88b4ebc-fed3-41d2-9d7b-080eb091a0e6",
+      "sourceBId": "1dec3ce6-f26d-4e24-98b8-c8aa40508db8",
+      "conflictDescription": "SIMULATED — NOT REAL UBC CONFLICT. This is a test fixture demonstrating two disagreeing sources about a prerequisite. No genuine conflict was found among the real UBC sources researched in this session; this exists only to exercise the Conflict entity and its resolution workflow end-to-end.",
+      "detectedDate": "2026-09-21",
+      "resolutionStatus": "OPEN",
+      "resolutionNotes": null,
+      "resolvedBy": null,
+      "resolvedDate": null,
+      "isSimulated": true,
+      "simulatedLabel": "SIMULATED — NOT REAL UBC CONFLICT"
+    }
+  ]
+}
